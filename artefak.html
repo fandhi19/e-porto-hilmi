@@ -1,0 +1,968 @@
+<!doctype html>
+<html lang="id" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Artefak Pembelajaran | E-Portofolio PPG Calon Guru</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+    <link rel="shortcut icon" href="logo.png" type="image/x-icon" />
+    <link rel="shortcut icon" href="logo.png" type="image/x-icon">
+
+    <!-- Tailwind Kustom -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Poppins", "sans-serif"],
+              tech: ["Orbitron", "sans-serif"],
+            },
+            colors: {
+              unyBlue: "#0A3254",
+              unyYellow: "#F2A900",
+              techCyan: "#00F0FF",
+              darkBg: "#050B14",
+            },
+          },
+        },
+      };
+    </script>
+
+    <!-- Kustom CSS -->
+    <style>
+      body {
+        background-color: #050b14;
+        color: white;
+        overflow-x: hidden;
+        cursor: none;
+      }
+
+      /* --- Kursor Kustom --- */
+      #cursor-dot {
+        width: 8px;
+        height: 8px;
+        background-color: #00f0ff;
+        border-radius: 50%;
+        position: fixed;
+        pointer-events: none;
+        z-index: 9999;
+        box-shadow:
+          0 0 10px #00f0ff,
+          0 0 20px #00f0ff;
+        transform: translate(-50%, -50%);
+        transition:
+          width 0.2s,
+          height 0.2s;
+      }
+      #cursor-outline {
+        width: 40px;
+        height: 40px;
+        border: 1px solid rgba(0, 240, 255, 0.5);
+        border-radius: 50%;
+        position: fixed;
+        pointer-events: none;
+        z-index: 9998;
+        transform: translate(-50%, -50%);
+        transition:
+          left 0.1s ease-out,
+          top 0.1s ease-out,
+          width 0.2s,
+          height 0.2s;
+      }
+
+      /* --- Animasi Background Sirkuit --- */
+      .grid-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-image: linear-gradient(to right, rgba(0, 240, 255, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(0, 240, 255, 0.05) 1px, transparent 1px);
+        background-size: 50px 50px;
+        z-index: -2;
+        transform: perspective(500px) rotateX(60deg) translateY(-100px) translateZ(-200px);
+        animation: gridMove 20s linear infinite;
+      }
+      @keyframes gridMove {
+        0% {
+          transform: perspective(500px) rotateX(60deg) translateY(0) translateZ(-200px);
+        }
+        100% {
+          transform: perspective(500px) rotateX(60deg) translateY(50px) translateZ(-200px);
+        }
+      }
+
+      /* --- Glassmorphism & Neon --- */
+      .glass-nav {
+        background: rgba(5, 11, 20, 0.7);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+      }
+      .glass-card {
+        background: rgba(10, 50, 84, 0.3);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(0, 240, 255, 0.1);
+        border-radius: 16px;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        transform-style: preserve-3d;
+      }
+      .glass-card:hover {
+        border-color: #00f0ff;
+        box-shadow:
+          0 0 20px rgba(0, 240, 255, 0.3),
+          inset 0 0 15px rgba(0, 240, 255, 0.1);
+      }
+      .glass-card > * {
+        transform: translateZ(30px);
+      }
+
+      .text-gradient {
+        background: linear-gradient(90deg, #00f0ff, #f2a900);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .btn-neon {
+        position: relative;
+        overflow: hidden;
+        transition: 0.3s;
+        z-index: 1;
+      }
+      .btn-neon::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.4), transparent);
+        transition: 0.5s;
+        z-index: -1;
+      }
+      .btn-neon:hover::before {
+        left: 100%;
+      }
+      .btn-neon:hover {
+        box-shadow: 0 0 15px #00f0ff;
+        text-shadow: 0 0 5px #00f0ff;
+      }
+
+      .reveal {
+        opacity: 0;
+        transform: translateY(50px);
+        transition: all 0.8s ease-out;
+      }
+      .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .tilt-card {
+        transition: transform 0.1s ease-out;
+      }
+
+      /* Tab Buttons */
+      .tab-btn {
+        padding: 0.75rem 1.5rem;
+        background: rgba(10, 50, 84, 0.3);
+        border: 1px solid rgba(0, 240, 255, 0.2);
+        border-radius: 999px;
+        color: #ccc;
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: all 0.3s;
+        backdrop-filter: blur(8px);
+      }
+      .tab-btn.active,
+      .tab-btn:hover {
+        background: rgba(0, 240, 255, 0.15);
+        border-color: #00f0ff;
+        color: #00f0ff;
+        box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+      }
+
+      /* Identity Bar */
+      .identity-item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+      .identity-item i {
+        font-size: 1.8rem;
+        color: #00f0ff;
+      }
+
+      /* PDF wrapper */
+      .pdf-wrapper {
+        border: 1px solid rgba(0, 240, 255, 0.2);
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+      }
+      .pdf-wrapper iframe {
+        width: 100%;
+        height: 500px;
+        border: none;
+      }
+
+      /* Zigzag Visual Card */
+      .visual-card {
+        width: 220px;
+        height: 220px;
+        border-radius: 24px;
+        background: rgba(10, 50, 84, 0.4);
+        backdrop-filter: blur(8px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(0, 240, 255, 0.3);
+        box-shadow: 0 0 25px rgba(0, 240, 255, 0.15);
+        transition: all 0.3s;
+        position: relative;
+      }
+      .visual-card:hover {
+        transform: scale(1.05);
+        border-color: #00f0ff;
+        box-shadow: 0 0 30px rgba(0, 240, 255, 0.4);
+      }
+      .big-icon {
+        font-size: 4rem;
+        color: #00f0ff;
+        filter: drop-shadow(0 0 10px #00f0ff);
+      }
+      .big-icon-light {
+        font-size: 4rem;
+        color: #f2a900;
+        filter: drop-shadow(0 0 10px #f2a900);
+      }
+      .icon-coral-text {
+        color: #f2a900;
+        filter: drop-shadow(0 0 10px #f2a900);
+      }
+    </style>
+  </head>
+  <body class="antialiased font-sans">
+    <!-- Custom Cursor -->
+    <div id="cursor-dot"></div>
+    <div id="cursor-outline"></div>
+
+    <!-- Background Animasi Sirkuit -->
+    <div class="grid-bg"></div>
+    <canvas id="networkCanvas" class="fixed top-0 left-0 w-full h-full -z-10 opacity-40"></canvas>
+
+    <!-- ================= NAVBAR ================= -->
+    <header class="glass-nav fixed w-full top-0 z-50 transition-all duration-300" id="navbar">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-20">
+          <div class="flex items-center space-x-3 cursor-pointer hover:scale-105 transition-transform">
+            <img src="logo.png" alt="Logo UNY" class="w-10 h-10 rounded-full border border-techCyan shadow-[0_0_10px_rgba(0,240,255,0.5)]" />
+            <div class="flex flex-col">
+              <span class="font-tech font-bold text-xl tracking-wider text-white">E-PORTOFOLIO <span class="text-unyYellow">PPG</span></span>
+              <span class="text-xs text-techCyan tracking-widest uppercase">Prajabatan 2026</span>
+            </div>
+          </div>
+
+          <div class="hidden md:flex space-x-8 items-center">
+            <a href="index.html" class="text-gray-300 hover:text-techCyan transition font-medium text-sm uppercase tracking-wide relative group">
+              Beranda<span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-techCyan transition-all duration-300 group-hover:w-full"></span>
+            </a>
+            <div class="relative group">
+              <button class="text-gray-300 hover:text-techCyan transition font-medium text-sm uppercase tracking-wide flex items-center gap-1">E-Portofolio 1 <i class="fa-solid fa-chevron-down text-[10px] ml-1"></i></button>
+              <div class="absolute hidden group-hover:block bg-darkBg/80 backdrop-blur-md border border-techCyan/20 rounded-lg mt-2 py-2 w-56 shadow-xl z-50">
+                <a href="profile.html" class="block px-4 py-2 text-sm text-gray-300 hover:text-techCyan hover:bg-white/5"><i class="fa-solid fa-user-graduate mr-2 w-4"></i>Profil Mahasiswa</a>
+                <a href="artefak.html" class="block px-4 py-2 text-sm text-gray-300 hover:text-techCyan hover:bg-white/5"><i class="fa-solid fa-file-waveform mr-2 w-4"></i>Artefak Produk</a>
+                <a href="penilaian.html" class="block px-4 py-2 text-sm text-gray-300 hover:text-techCyan hover:bg-white/5"><i class="fa-solid fa-list-check mr-2 w-4"></i>Penilaian GP</a>
+                <a href="modelguru.html" class="block px-4 py-2 text-sm text-gray-300 hover:text-techCyan hover:bg-white/5"><i class="fa-solid fa-bullseye mr-2 w-4"></i>Model Guru</a>
+              </div>
+            </div>
+            <div class="relative group">
+              <button class="text-gray-300 hover:text-techCyan transition font-medium text-sm uppercase tracking-wide flex items-center gap-1">E-Portofolio 2 <i class="fa-solid fa-chevron-down text-[10px] ml-1"></i></button>
+              <div class="absolute hidden group-hover:block bg-darkBg/80 backdrop-blur-md border border-techCyan/20 rounded-lg mt-2 py-2 w-56 shadow-xl z-50">
+                <a href="refleksi.html" class="block px-4 py-2 text-sm text-gray-300 hover:text-techCyan hover:bg-white/5"><i class="fa-solid fa-arrows-rotate mr-2 w-4"></i>Refleksi Akhir</a>
+                <a href="filosofi.html" class="block px-4 py-2 text-sm text-gray-300 hover:text-techCyan hover:bg-white/5"><i class="fa-solid fa-seedling mr-2 w-4"></i>Filosofi Mengajar</a>
+              </div>
+            </div>
+            <a href="dokumentasi.html" class="text-gray-300 hover:text-techCyan transition font-medium text-sm uppercase tracking-wide relative group">
+              Dokumentasi<span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-techCyan transition-all duration-300 group-hover:w-full"></span>
+            </a>
+          </div>
+
+          <div class="md:hidden flex items-center">
+            <button id="hamburger" class="text-techCyan hover:text-white focus:outline-none text-2xl">
+              <i class="fa-solid fa-bars"></i>
+            </button>
+          </div>
+        </div>
+        <div id="nav-menu" class="md:hidden hidden flex-col space-y-2 pb-4">
+          <a href="index.html" class="block text-gray-300 hover:text-techCyan py-2">Beranda</a>
+          <div class="dropdown-mobile">
+            <button class="dropbtn-mobile w-full text-left text-gray-300 hover:text-techCyan py-2 flex justify-between items-center">E-Portofolio 1 <i class="fa-solid fa-chevron-down chevron text-xs"></i></button>
+            <div class="dropdown-content-mobile hidden pl-4 space-y-1">
+              <a href="profile.html" class="block text-gray-400 hover:text-techCyan py-1">Profil Mahasiswa</a>
+              <a href="artefak.html" class="block text-gray-400 hover:text-techCyan py-1">Artefak Produk</a>
+              <a href="penilaian.html" class="block text-gray-400 hover:text-techCyan py-1">Penilaian GP</a>
+              <a href="modelguru.html" class="block text-gray-400 hover:text-techCyan py-1">Model Guru</a>
+            </div>
+          </div>
+          <div class="dropdown-mobile">
+            <button class="dropbtn-mobile w-full text-left text-gray-300 hover:text-techCyan py-2 flex justify-between items-center">E-Portofolio 2 <i class="fa-solid fa-chevron-down chevron text-xs"></i></button>
+            <div class="dropdown-content-mobile hidden pl-4 space-y-1">
+              <a href="refleksi.html" class="block text-gray-400 hover:text-techCyan py-1">Refleksi Akhir</a>
+              <a href="filosofi.html" class="block text-gray-400 hover:text-techCyan py-1">Filosofi Mengajar</a>
+            </div>
+          </div>
+          <a href="dokumentasi.html" class="block text-gray-300 hover:text-techCyan py-2">Dokumentasi</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- ================= MAIN CONTENT ================= -->
+    <main class="pt-24">
+      <!-- Hero Artefak -->
+      <section class="py-16 relative z-10">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+          <div class="inline-block mb-4 px-4 py-1 rounded-full border border-unyYellow/50 bg-unyYellow/10 text-unyYellow text-sm font-medium tracking-widest uppercase shadow-[0_0_15px_rgba(242,169,0,0.2)]">
+            <i class="fa-solid fa-layer-group mr-2"></i> Ruang Karya E-Portofolio 1
+          </div>
+          <h1 class="text-5xl md:text-6xl font-tech font-bold mb-4">Artefak & <span class="text-gradient">Perangkat Pembelajaran</span></h1>
+          <p class="text-gray-400 text-lg max-w-2xl mx-auto">Eksplorasi dokumen rancangan pembelajaran PJOK beserta analisis reflektif mengenai kendala, landasan teori, faktor keberhasilan, dan adaptabilitas ruang kelas.</p>
+        </div>
+      </section>
+
+      <!-- Document Section -->
+      <section class="py-8 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <!-- Identity Bar -->
+          <div class="glass-card p-6 grid grid-cols-2 md:grid-cols-4 gap-6 mb-12 reveal">
+            <div class="identity-item">
+              <i class="fa-solid fa-user-graduate"></i>
+              <div>
+                <span class="text-xs text-gray-500 block">Mahasiswa</span>
+                <h4 class="font-semibold text-white">Muhammad Hilmi Bandanuji, S.Pd</h4>
+              </div>
+            </div>
+            <div class="identity-item">
+              <i class="fa-solid fa-book"></i>
+              <div>
+                <span class="text-xs text-gray-500 block">Mata Pelajaran</span>
+                <h4 class="font-semibold text-white">Teknik Elektronika</h4>
+              </div>
+            </div>
+            <div class="identity-item">
+              <i class="fa-solid fa-school"></i>
+              <div>
+                <span class="text-xs text-gray-500 block">Sekolah Mitra (PPL)</span>
+                <h4 class="font-semibold text-white">SMKN 2 Yogyakarta</h4>
+              </div>
+            </div>
+            <div class="identity-item">
+              <i class="fa-solid fa-users-viewfinder"></i>
+              <div>
+                <span class="text-xs text-gray-500 block">Fase / Kelas</span>
+                <h4 class="font-semibold text-white">Fase F / Kelas XI</h4>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab Container -->
+          <div class="pdf-tabs-container">
+            <div class="flex flex-wrap justify-center gap-3 mb-8">
+              <button class="tab-btn active" onclick="openPdfTab(event, 'tab-modul')"><i class="fa-solid fa-book-open mr-2"></i> Modul Ajar</button>
+              <button class="tab-btn" onclick="openPdfTab(event, 'tab-lkpd')"><i class="fa-solid fa-clipboard-list mr-2"></i> JOBSHEET</button>
+              <button class="tab-btn" onclick="openPdfTab(event, 'tab-rubrik')"><i class="fa-solid fa-spell-check mr-2"></i> Observasi</button>
+            </div>
+
+            <!-- TAB MODUL AJAR -->
+            <div id="tab-modul" class="tab-content active">
+              <!-- Analisis -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+                <div class="glass-card p-6 tilt-card">
+                  <i class="fa-solid fa-seedling text-3xl text-techCyan mb-3"></i>
+                  <h4 class="font-bold text-white mb-2">Konteks Pembelajaran</h4>
+                  <p class="text-gray-300 text-sm leading-relaxed">
+                    Modul ini dirancang untuk kelas XI Teknik Mekatronika (Fase F) di SMKN 2 Yogyakarta, dengan asumsi siswa telah memahami dasar komponen listrik, pneumatik, dan pengoperasian FluidSIM. Pembelajaran ini sangat relevan
+                    dengan industri karena mengadaptasi sistem nyata seperti <em>conveyor</em> dan robot industri melalui sinergi laboratorium komputer untuk simulasi dan laboratorium robotika untuk praktik fisik (Festo), serta secara
+                    konsisten menggunakan standar teknis simbol DIN 40900.
+                  </p>
+                </div>
+
+                <div class="glass-card p-6 tilt-card">
+                  <i class="fa-solid fa-bullseye text-3xl text-unyYellow mb-3"></i>
+                  <h4 class="font-bold text-white mb-2">Tujuan Pembelajaran</h4>
+                  <p class="text-gray-300 text-sm leading-relaxed">
+                    Tujuan pembelajaran disusun secara berjenjang: pertemuan pertama berfokus pada pengenalan komponen dan simulasi FluidSIM, pertemuan kedua untuk menyusun diagram <em>step</em> perpindahan, dan pertemuan ketiga berpusat
+                    pada perakitan sistem nyata beserta SOP K3. Kompetensi yang disasar mencakup ranah kognitif dalam memahami prinsip kontrol, ranah psikomotorik dalam perakitan dan dokumentasi, serta ranah afektif yang sangat menekankan
+                    K3 dan kolaborasi dengan bobot penilaian mencapai 20%.
+                  </p>
+                </div>
+
+                <div class="glass-card p-6 tilt-card">
+                  <i class="fa-solid fa-star text-3xl text-techCyan mb-3"></i>
+                  <h4 class="font-bold text-white mb-2">Kelebihan Pendekatan</h4>
+                  <p class="text-gray-300 text-sm leading-relaxed">
+                    Pendekatan modul ini memiliki alur yang sangat logis dengan memanfaatkan simulasi sebagai arena aman sebelum siswa melakukan praktik fisik. Pembelajaran menggunakan <em>Problem-Based Learning</em> dengan studi kasus
+                    mesin industri otentik dan bahasa universal berupa diagram <em>step</em> perpindahan. Selain itu, sistem penilaian dirancang secara autentik dan berlapis, didukung oleh skenario diferensiasi yang terstruktur serta
+                    integrasi budaya K3 yang menyeluruh di setiap tahapan.
+                  </p>
+                </div>
+
+                <div class="glass-card p-6 tilt-card">
+                  <i class="fa-solid fa-triangle-exclamation text-3xl text-unyYellow mb-3"></i>
+                  <h4 class="font-bold text-white mb-2">Tantangan Pelaksanaan</h4>
+                  <p class="text-gray-300 text-sm leading-relaxed">
+                    Pelaksanaan modul ini dihadapkan pada beban waktu yang sangat padat, yakni 10 JP per pertemuan, serta ketergantungan yang tinggi pada ketersediaan unit <em>trainer</em> Festo yang memadai. Guru juga dituntut memiliki
+                    kompetensi teknis yang komprehensif untuk mengelola kelas dengan variasi kemampuan siswa yang lebar. Di sisi lain, instrumen asesmen dan literasi keselamatan (K3) pada pertemuan awal masih terasa ringkas dan perlu
+                    diperdetail untuk meminimalisasi risiko saat praktik.
+                  </p>
+                </div>
+              </div>
+
+              <div class="glass-card p-6 tilt-card w-full mb-10">
+                <i class="fa-solid fa-lightbulb text-3xl text-techCyan mb-3"></i>
+                <h4 class="font-bold text-white mb-2">Kesimpulan Analisis</h4>
+                <p class="text-gray-300 text-sm leading-relaxed">
+                  Modul ini menunjukkan kualitas perancangan yang matang — relevan secara industri, pedagogis yang koheren, dan berorientasi pada kompetensi nyata. Titik terkuat ada pada integrasi simulasi-praktik dan penekanan K3 yang
+                  konsisten. Tantangan utama terletak pada implementasi di kondisi lapangan: kepadatan waktu, ketersediaan alat, dan kebutuhan instrumen penilaian yang lebih lengkap untuk pertemuan 1 dan 2. Dengan perbaikan pada aspek-aspek
+                  tersebut, modul ini memiliki potensi besar untuk dijadikan model pembelajaran SMK kejuruan mekatronika secara lebih luas.
+                </p>
+              </div>
+
+              <!-- PDF List -->
+              <!-- RPP MKK1 -->
+              <div class="pdf-wrapper mb-6">
+                <iframe src="Dokumen/Modul Ajar MKK1 (Sistem Kontrol Mekatronika & Sistem Robotik).pdf" title="RPP Bola Voli Kelas X" loading="lazy"></iframe>
+              </div>
+              <div class="flex justify-center gap-4 mb-12">
+                <a
+                  href="Dokumen/Modul Ajar MKK1 (Sistem Kontrol Mekatronika & Sistem Robotik).pdf"
+                  target="_blank"
+                  class="btn-neon px-6 py-2 bg-techCyan text-darkBg font-bold rounded-full font-tech text-sm hover:scale-105 flex items-center gap-2"
+                >
+                  <i class="fa-solid fa-up-right-from-square"></i> Buka Layar Penuh
+                </a>
+                <a
+                  href="Dokumen/Modul Ajar MKK1 (Sistem Kontrol Mekatronika & Sistem Robotik).pdf"
+                  download
+                  class="btn-neon px-6 py-2 border border-unyYellow text-unyYellow font-bold rounded-full font-tech text-sm hover:scale-105 flex items-center gap-2"
+                >
+                  <i class="fa-solid fa-download"></i> Unduh Modul
+                </a>
+              </div>
+            </div>
+
+            <!-- TAB LKPD -->
+            <div id="tab-lkpd" class="tab-content hidden">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+                <div class="glass-card p-6 tilt-card">
+                  <i class="fa-solid fa-seedling text-3xl text-techCyan mb-3"></i>
+                  <h4 class="font-bold text-white mb-2">Konteks Pengembangan</h4>
+                  <p class="text-gray-300 text-sm">
+                    Pembelajaran ini ditujukan bagi siswa Kelas XI Teknik Mekatronika di SMK Negeri 2 Yogyakarta pada semester genap. Materi yang diajarkan berfokus pada mata pelajaran Robotic dan Teknik Kontrol Mekatronika, yang mencakup
+                    pengenalan komponen dasar hingga sistem kendali tingkat lanjut. Siswa diperkenalkan pada teknologi yang menggabungkan udara bertekanan sebagai tenaga penggerak dan sinyal listrik sebagai media kontrolnya
+                  </p>
+                </div>
+                <div class="glass-card p-6 tilt-card">
+                  <i class="fa-solid fa-bullseye text-3xl text-unyYellow mb-3"></i>
+                  <h4 class="font-bold text-white mb-2">Tujuan Instruksional</h4>
+                  <p class="text-gray-300 text-sm">
+                    Tujuan utama dari rangkaian praktikum ini adalah agar siswa mampu mengidentifikasi elemen kontrol, memahami simbol standar DIN 40900, serta menjelaskan fungsi komponen elektrik dan pneumatik. Pada tingkat lanjut, siswa
+                    diharapkan dapat merancang sistem sekuensial dua silinder, menggunakan diagram step perpindahan, serta mengintegrasikan komponen khusus seperti Timer (tunda waktu) dan Counter (penghitung) dalam sistem kendali tidak
+                    langsung.
+                  </p>
+                </div>
+                <div class="glass-card p-6 tilt-card">
+                  <i class="fa-solid fa-star text-3xl text-techCyan mb-3"></i>
+                  <h4 class="font-bold text-white mb-2">Kelebihan Lembar Kerja</h4>
+                  <p class="text-gray-300 text-sm">
+                    Pendekatan yang digunakan sangat aplikatif dengan menghadirkan studi kasus industri nyata, seperti mesin pemindah barang, alat sortir, hingga mesin pengeboran otomatis. Selain itu, penggunaan software simulasi Festo
+                    FluidSIM sebelum merangkai secara fisik memungkinkan siswa memverifikasi logika kerja mesin dan mengurangi risiko kesalahan fatal. Pengenalan metode kontrol tidak langsung melalui relai juga memberikan keunggulan dalam
+                    hal keamanan sirkuit di dunia industri.
+                  </p>
+                </div>
+                <div class="glass-card p-6 tilt-card">
+                  <i class="fa-solid fa-triangle-exclamation text-3xl text-unyYellow mb-3"></i>
+                  <h4 class="font-bold text-white mb-2">Tantangan Pengerjaan</h4>
+                  <p class="text-gray-300 text-sm">
+                    Tantangan utama terletak pada aspek *keselamatan kerja, di mana siswa harus memastikan tangan tetap kering, mencegah hubungan singkat pada kabel listrik, dan menjaga tekanan udara tidak melebihi **batas maksimum 6 bar.
+                    Secara teknis, ketepatan dalam **pemasangan sensor (limit switch atau proksimitas)* sangat krusial agar urutan gerakan sekuensial berjalan sinkron dan presisi. Kompleksitas pengkabelan pada sistem yang melibatkan banyak
+                    logika sensor dan relai juga menuntut ketelitian tinggi dari peserta didik.
+                  </p>
+                </div>
+              </div>
+
+              <!-- LKPD Bola Voli -->
+              <div class="pdf-wrapper mb-6">
+                <iframe src="Dokumen/Job 1 Elektropneumatik - Pengenalan Dasar Komponen Elektropneumatik.pdf" title="LKPD Bola Voli" loading="lazy"></iframe>
+              </div>
+              <div class="flex justify-center gap-4 mb-12">
+                <a
+                  href="Dokumen/Job 1 Elektropneumatik - Pengenalan Dasar Komponen Elektropneumatik.pdf"
+                  target="_blank"
+                  class="btn-neon px-6 py-2 bg-techCyan text-darkBg font-bold rounded-full font-tech text-sm hover:scale-105 flex items-center gap-2"
+                >
+                  <i class="fa-solid fa-up-right-from-square"></i> Buka Layar Penuh
+                </a>
+                <a
+                  href="Dokumen/Job 1 Elektropneumatik - Pengenalan Dasar Komponen Elektropneumatik.pdf"
+                  download
+                  class="btn-neon px-6 py-2 border border-unyYellow text-unyYellow font-bold rounded-full font-tech text-sm hover:scale-105 flex items-center gap-2"
+                >
+                  <i class="fa-solid fa-download"></i> Unduh LKPD
+                </a>
+              </div>
+
+              <!-- LKPD Renang -->
+              <div class="pdf-wrapper mb-6">
+                <iframe src="Dokumen/Job 2 Elektropneumatik - Rangkaian Respirokal Elektropneumatik Langsung dan Tak langsung (Dengan Kunci).pdf" title="LKPD Renang Gaya Bebas" loading="lazy"></iframe>
+              </div>
+              <div class="flex justify-center gap-4 mb-12">
+                <a
+                  href="Dokumen/Job 2 Elektropneumatik - Rangkaian Respirokal Elektropneumatik Langsung dan Tak langsung (Dengan Kunci).pdf"
+                  target="_blank"
+                  class="btn-neon px-6 py-2 bg-techCyan text-darkBg font-bold rounded-full font-tech text-sm hover:scale-105 flex items-center gap-2"
+                >
+                  <i class="fa-solid fa-up-right-from-square"></i> Buka Layar Penuh
+                </a>
+                <a
+                  href="Dokumen/Job 2 Elektropneumatik - Rangkaian Respirokal Elektropneumatik Langsung dan Tak langsung (Dengan Kunci).pdf"
+                  download
+                  class="btn-neon px-6 py-2 border border-unyYellow text-unyYellow font-bold rounded-full font-tech text-sm hover:scale-105 flex items-center gap-2"
+                >
+                  <i class="fa-solid fa-download"></i> Unduh LKPD
+                </a>
+              </div>
+
+              <!-- LKPD Kebugaran -->
+              <div class="pdf-wrapper mb-6">
+                <iframe src="Dokumen/Job 3 Elektropneumatik - Variasi Lanjutan Sistem Kendali Elektropneumatik Tidak Langsung.pdf" title="LKPD Kebugaran jasmani" loading="lazy"></iframe>
+              </div>
+              <div class="flex justify-center gap-4">
+                <a
+                  href="Dokumen/Job 3 Elektropneumatik - Variasi Lanjutan Sistem Kendali Elektropneumatik Tidak Langsung.pdf"
+                  target="_blank"
+                  class="btn-neon px-6 py-2 bg-techCyan text-darkBg font-bold rounded-full font-tech text-sm hover:scale-105 flex items-center gap-2"
+                >
+                  <i class="fa-solid fa-up-right-from-square"></i> Buka Layar Penuh
+                </a>
+                <a
+                  href="Dokumen/Job 3 Elektropneumatik - Variasi Lanjutan Sistem Kendali Elektropneumatik Tidak Langsung.pdf"
+                  download
+                  class="btn-neon px-6 py-2 border border-unyYellow text-unyYellow font-bold rounded-full font-tech text-sm hover:scale-105 flex items-center gap-2"
+                >
+                  <i class="fa-solid fa-download"></i> Unduh LKPD
+                </a>
+              </div>
+            </div>
+
+            <!-- TAB OBSERVASI -->
+            <div id="tab-rubrik" class="tab-content hidden">
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                <div class="glass-card p-6 tilt-card">
+                  <i class="fa-solid fa-users text-3xl text-techCyan mb-3"></i>
+                  <h4 class="font-bold text-white mb-2">Karakteristik Murid</h4>
+                  <p class="text-gray-300 text-sm">
+                    Murid di SMK Negeri 2 Yogyakarta menunjukkan profil pembelajar yang aktif, antusias, dan memiliki motivasi intrinsik yang kuat, terutama dalam aktivitas praktik langsung (hands-on). Mereka memiliki karakter yang disiplin
+                    dan bertanggung jawab terhadap keselamatan kerja (safety-minded), yang terlihat dari kepatuhan konsisten dalam penggunaan Alat Pelindung Diri (APD) di area bengkel. Selain kompetensi teknis, murid juga menunjukkan jiwa
+                    kepemimpinan dan kepercayaan diri yang terlatih melalui keterlibatan aktif memimpin sesi Leadership Character. Secara sosial, mereka memiliki kemampuan kerja sama tim (teamwork) yang solid, saling menghargai, dan
+                    menunjukkan interaksi yang positif serta inklusif baik dengan sesama rekan maupun dengan guru sebagai mentor belajar mereka.
+                  </p>
+                </div>
+                <div class="glass-card p-6 tilt-card">
+                  <i class="fa-solid fa-school-flag text-3xl text-unyYellow mb-3"></i>
+                  <h4 class="font-bold text-white mb-2">Kultur & Lingkungan Sekolah</h4>
+                  <p class="text-gray-300 text-sm">
+                    Sekolah ini menerapkan budaya The Industrial Culture School (TICS) secara menyeluruh, di mana nilai-nilai industri seperti budaya 5S (Seiri, Seiton, Seiso, Seiketsu, Shitsuke), 7K, dan etos kerja profesional telah
+                    menjadi muscle memory bagi seluruh warga sekolah. Lingkungan sekolah terasa sangat tertib, religius, dan harmonis, yang diperkuat dengan rutinitas harian seperti pembinaan IMTAQ yang inklusif, menyanyikan lagu
+                    kebangsaan, literasi, serta sesi Leadership Character di awal dan akhir pembelajaran. Hubungan antarwarga sekolah—guru, tenaga kependidikan, dan murid—terjalin dengan penuh keakraban profesional dan saling menghormati,
+                    sehingga menciptakan iklim kerja yang sehat, produktif, dan mendukung perkembangan profesional setiap individu.
+                  </p>
+                </div>
+                <div class="glass-card p-6 tilt-card">
+                  <i class="fa-solid fa-toolbox text-3xl text-techCyan mb-3"></i>
+                  <h4 class="font-bold text-white mb-2">Sarana & Prasarana</h4>
+                  <p class="text-gray-300 text-sm">
+                    Fasilitas pembelajaran di sekolah ini secara umum sangat memadai, terencana, dan relevan dengan kebutuhan pendidikan kejuruan modern,. Sekolah memiliki pemisahan ruang teori dan praktik yang jelas, dengan laboratorium
+                    dan bengkel spesifik untuk setiap jurusan, seperti Bengkel Teknik Mekatronika yang dilengkapi peralatan canggih mencakup modul PLC, robot lengan, hingga komputer berbasis CAD/CAM. Dukungan terhadap transformasi digital
+                    terlihat dari ketersediaan fasilitas ICT yang lengkap, seperti akses internet gratis, perpustakaan digital (Self Access Study), dan penggunaan Learning Management System (LMS). Meskipun terdapat tantangan berupa status
+                    cagar budaya pada bangunan tertentu yang membatasi fleksibilitas renovasi fisik serta jumlah alat praktik yang terkadang belum mencukupi untuk seluruh murid secara serentak, sekolah berhasil mengatasinya melalui
+                    manajemen penjadwalan dan sistem rotasi praktikum yang efektif.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Rubrik 1 -->
+              <div class="pdf-wrapper mb-6">
+                <iframe src="Dokumen/LK.1.PPLT.pdf" title="Rubrik Penilaian 1" loading="lazy"></iframe>
+              </div>
+              <div class="flex justify-center gap-4 mb-12">
+                <a href="Dokumen/LK.1.PPLT.pdf" target="_blank" class="btn-neon px-6 py-2 bg-techCyan text-darkBg font-bold rounded-full font-tech text-sm hover:scale-105 flex items-center gap-2">
+                  <i class="fa-solid fa-up-right-from-square"></i> Buka Layar Penuh
+                </a>
+                <a href="Dokumen/LK.1.PPLT.pdf" download class="btn-neon px-6 py-2 border border-unyYellow text-unyYellow font-bold rounded-full font-tech text-sm hover:scale-105 flex items-center gap-2">
+                  <i class="fa-solid fa-download"></i> Unduh Rubrik
+                </a>
+              </div>
+
+              <!-- Rubrik 2 -->
+              <div class="pdf-wrapper mb-6">
+                <iframe src="Dokumen/LK.2.PPLT.pdf" title="Rubrik Penilaian 2" loading="lazy"></iframe>
+              </div>
+              <div class="flex justify-center gap-4">
+                <a href="Dokumen/LK.2.PPLT.pdf" target="_blank" class="btn-neon px-6 py-2 bg-techCyan text-darkBg font-bold rounded-full font-tech text-sm hover:scale-105 flex items-center gap-2">
+                  <i class="fa-solid fa-up-right-from-square"></i> Buka Layar Penuh
+                </a>
+                <a href="Dokumen/LK.2.PPLT.pdf" download class="btn-neon px-6 py-2 border border-unyYellow text-unyYellow font-bold rounded-full font-tech text-sm hover:scale-105 flex items-center gap-2">
+                  <i class="fa-solid fa-download"></i> Unduh Rubrik
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="py-16 relative z-10">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="text-center mb-16 reveal">
+            <h2 class="text-3xl md:text-5xl font-tech font-bold text-white mb-4">Analisis Artefak Produk <span class="text-gradient">Rencana dan Perangkat Pembelajaran</span></h2>
+            <p class="text-gray-400 max-w-3xl mx-auto text-sm leading-relaxed">
+              <strong>Produk yang Dianalisis:</strong> RPP/Modul Ajar Pembelajaran Mendalam — MKK 1 Sistem Kontrol Mekatronika dan Sistem Robotik, Kelas XI Teknik Mekatronika, SMK Negeri 2 Yogyakarta.
+            </p>
+          </div>
+
+          <div class="space-y-16">
+            <div class="flex flex-col md:flex-row items-center gap-8 reveal">
+              <div class="md:w-1/3 flex justify-center">
+                <div class="visual-card tilt-card">
+                  <i class="fa-solid fa-triangle-exclamation big-icon"></i>
+                </div>
+              </div>
+              <div class="md:w-2/3">
+                <div class="flex items-start gap-4">
+                  <span class="text-6xl font-tech font-bold text-techCyan/30 leading-none">A</span>
+                  <div>
+                    <h3 class="text-2xl font-bold text-white mb-3">Kendala yang Terjadi Selama Proses Penyusunan</h3>
+                    <div class="text-gray-400 leading-relaxed text-sm">
+                      <ul class="list-disc pl-5 space-y-3">
+                        <li>
+                          <strong>Kesenjangan Idealitas dan Realitas:</strong> Hanya tersedia 4 unit trainer fisik Festo untuk 32 siswa. Merancang aktivitas bermakna agar siswa yang menunggu giliran tidak membuang waktu membutuhkan iterasi
+                          yang tinggi.
+                        </li>
+                        <li>
+                          <strong>Merumuskan Tujuan Terukur:</strong> Menghindari jebakan kata kerja pasif seperti "memahami". Setiap tujuan direvisi agar bisa dilacak melalui bukti konkret (hasil diagram, *troubleshooting*, atau refleksi).
+                        </li>
+                        <li><strong>Integrasi Tahapan Alami:</strong> Menyatukan fase memahami, mengaplikasikan, dan merefleksikan agar transisinya terasa natural dan pedagogis, bukan sekadar menggugurkan kewajiban kerangka kurikulum.</li>
+                        <li>
+                          <strong>Asesmen Autentik vs Praktis:</strong> Menyeimbangkan observasi intensif yang ideal dengan keterbatasan waktu guru tunggal di kelas besar, menuntut pemilihan instrumen yang paling efisien namun tetap kaya
+                          data.
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex flex-col md:flex-row-reverse items-center gap-8 reveal">
+              <div class="md:w-1/3 flex justify-center">
+                <div class="visual-card tilt-card">
+                  <i class="fa-solid fa-brain big-icon-light"></i>
+                </div>
+              </div>
+              <div class="md:w-2/3">
+                <div class="flex items-start gap-4">
+                  <span class="text-6xl font-tech font-bold text-unyYellow/30 leading-none">B</span>
+                  <div>
+                    <h3 class="text-2xl font-bold text-white mb-3">Teori atau Konsep Pedagogi yang Diadopsi</h3>
+                    <div class="text-gray-400 leading-relaxed text-sm">
+                      <ul class="list-disc pl-5 space-y-3">
+                        <li><strong>Understanding by Design (UbD):</strong> *Backward design* menjadi tulang punggung, di mana *essential question* memandu alur dari tujuan ke asesmen, lalu ke aktivitas.</li>
+                        <li><strong>Problem-Based Learning (PBL):</strong> Masalah autentik industri (rangkaian gagal, kebocoran) menjadi titik berangkat eksplorasi, khususnya pada sesi *troubleshooting* berpandu.</li>
+                        <li><strong>Constructivism (Vygotsky & Piaget):</strong> Menerapkan konsep *Zone of Proximal Development* (ZPD) melalui *scaffolding* bertingkat (studi kasus *basic, intermediate, advanced*).</li>
+                        <li><strong>Experiential Learning (Kolb):</strong> Memanfaatkan siklus belajar mulai dari konseptualisasi hingga eksperimen aktif (simulasi & praktik fisik) yang bermuara pada refleksi observasional.</li>
+                        <li><strong>Deep Learning Framework:</strong> Memastikan setiap aktivitas bermakna (terhubung dengan DUDIKA), berkesadaran (metakognisi), dan menggembirakan.</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex flex-col md:flex-row items-center gap-8 reveal">
+              <div class="md:w-1/3 flex justify-center">
+                <div class="visual-card tilt-card">
+                  <i class="fa-solid fa-ranking-star icon-coral-text"></i>
+                </div>
+              </div>
+              <div class="md:w-2/3">
+                <div class="flex items-start gap-4">
+                  <span class="text-6xl font-tech font-bold text-techCyan/30 leading-none">C</span>
+                  <div>
+                    <h3 class="text-2xl font-bold text-white mb-3">Faktor Keberhasilan Penerapan Produk Pembelajaran</h3>
+                    <div class="text-gray-400 leading-relaxed text-sm">
+                      <ul class="list-disc pl-5 space-y-3">
+                        <li><strong>Kontekstualisasi Industri Spesifik:</strong> Apersepsi berbasis video sistem pneumatik industri terbukti ampuh sebagai pemicu motivasi intrinsik siswa.</li>
+                        <li>
+                          <strong>Protokol <em>Verify-then-Build</em>:</strong> Mewajibkan simulasi di Festo FluidSIM sebelum praktik fisik berhasil membangun habitus teknisi profesional dan menekan waktu *troubleshooting* fisik.
+                        </li>
+                        <li>
+                          <strong><em>Scaffolding Troubleshooting</em>:</strong> Menahan diri memberi jawaban langsung dan menggantinya dengan pertanyaan diagnostik ("Apa hipotesismu?") memicu pemahaman yang lebih dalam.
+                        </li>
+                        <li>
+                          <strong><em>Scaffolding</em> Refleksi Tertulis:</strong> Panduan pertanyaan reflektif yang spesifik secara bertahap berhasil meningkatkan kedalaman metakognisi siswa di setiap siklus pertemuan.
+                        </li>
+                        <li><strong>Kolaborasi Autentik:</strong> Diskusi intensif bersama Guru Pamong untuk umpan balik diagnostik membuat implementasi RPP sangat adaptif terhadap dinamika kelas.</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex flex-col md:flex-row-reverse items-center gap-8 reveal">
+              <div class="md:w-1/3 flex justify-center">
+                <div class="visual-card tilt-card">
+                  <i class="fa-solid fa-sliders big-icon-light"></i>
+                </div>
+              </div>
+              <div class="md:w-2/3">
+                <div class="flex items-start gap-4">
+                  <span class="text-6xl font-tech font-bold text-unyYellow/30 leading-none">D</span>
+                  <div>
+                    <h3 class="text-2xl font-bold text-white mb-3">Perubahan Komponen untuk Situasi Kelas yang Berbeda</h3>
+                    <div class="text-gray-400 leading-relaxed text-sm">
+                      <ul class="list-disc pl-5 space-y-3">
+                        <li><strong>Tanpa Trainer Fisik:</strong> FluidSIM menjadi medium utama. Evaluasi diganti dengan perancangan variasi rangkaian dan *debugging* digital, ditambah studi kasus pemikiran hipotetis.</li>
+                        <li><strong>Kelas Kecil & Alat Memadai:</strong> Waktu rotasi diperpanjang (25-30 menit) untuk eksplorasi lebih dalam, ditambah tantangan modifikasi mandiri tanpa *jobsheet*.</li>
+                        <li><strong>Siswa Sangat Heterogen:</strong> Menerapkan *tiered tasks* yang eksplisit dengan ambang batas (wajib *basic* baru ke *advanced*) serta menyediakan <em>support card</em> agar siswa tidak stagnan.</li>
+                        <li>
+                          <strong>Waktu Pembelajaran Terbatas:</strong> Memprioritaskan kedalaman dibanding ketuntasan konten (mengurangi variasi praktik), serta mengganti refleksi tertulis dengan <em>exit ticket</em> lisan secara
+                          bergantian.
+                        </li>
+                        <li><strong>Beda Kompetensi Keahlian (Listrik/Otomasi):</strong> Prinsip pedagogis tetap, namun kontekstualisasi masalah diganti dengan sistem panel kontrol listrik atau integrasi PLC pada mesin pneumatik.</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="glass-nav border-t border-gray-800 mt-20 relative z-10">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div>
+            <h3 class="font-tech text-white text-lg">E-Portofolio<span class="text-unyYellow"> PPG</span></h3>
+            <p class="text-gray-400 text-sm mt-3">Ruang rekam jejak Praktik Pengalaman Lapangan (PPL) 1. Disusun sebagai dokumentasi dan refleksi perjalanan menjadi guru profesional.</p>
+          </div>
+          <div>
+            <h4 class="font-bold text-white flex items-center gap-2"><i class="fa-solid fa-book-open text-techCyan"></i> E-Portofolio 1</h4>
+            <ul class="mt-3 space-y-2 text-sm text-gray-400">
+              <li>
+                <a href="profile.html" class="hover:text-techCyan transition"><i class="fa-solid fa-user-graduate mr-2 w-4"></i>Profil Mahasiswa</a>
+              </li>
+              <li>
+                <a href="artefak.html" class="hover:text-techCyan transition"><i class="fa-solid fa-file-waveform mr-2 w-4"></i>Artefak Produk</a>
+              </li>
+              <li>
+                <a href="penilaian.html" class="hover:text-techCyan transition"><i class="fa-solid fa-list-check mr-2 w-4"></i>Instrumen Penilaian</a>
+              </li>
+              <li>
+                <a href="modelguru.html" class="hover:text-techCyan transition"><i class="fa-solid fa-chalkboard-user mr-2 w-4"></i>Model Guru</a>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-bold text-white flex items-center gap-2"><i class="fa-solid fa-layer-group text-techCyan"></i> E-Portofolio 2</h4>
+            <ul class="mt-3 space-y-2 text-sm text-gray-400">
+              <li>
+                <a href="refleksi.html" class="hover:text-techCyan transition"><i class="fa-solid fa-arrows-rotate mr-2 w-4"></i>Refleksi Akhir</a>
+              </li>
+              <li>
+                <a href="filosofi.html" class="hover:text-techCyan transition"><i class="fa-solid fa-seedling mr-2 w-4"></i>Filosofi Mengajar</a>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-bold text-white flex items-center gap-2"><i class="fa-solid fa-location-dot text-techCyan"></i> Lokasi LPTK</h4>
+            <p class="text-gray-400 text-sm mt-3"><i class="fa-solid fa-building-columns mr-1"></i> Universitas Negeri Yogyakarta</p>
+            <div class="rounded-lg overflow-hidden mt-3 border border-techCyan/20">
+              <iframe src="https://maps.google.com/maps?q=Universitas%20Negeri%20Yogyakarta&t=&z=15&ie=UTF8&iwloc=&output=embed" width="100%" height="120" style="border: 0" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+            <div class="flex gap-3 mt-4 text-sm text-gray-400">
+              <a href="mailto:Hilmibanda@gmail.com" class="hover:text-techCyan"><i class="fa-solid fa-envelope mr-1"></i> Email</a>
+              <a href="https://www.instagram.com/hilmibanda/" target="_blank" class="hover:text-techCyan"><i class="fa-brands fa-instagram mr-1"></i> Instagram</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="border-t border-gray-800 py-4">
+        <div class="max-w-7xl mx-auto px-4 text-center text-gray-500 text-xs">© 2026 Muhammad Hilmi Bandanuji - E-Portofolio PPL PPG. Semua Hak Cipta Dilindungi.</div>
+      </div>
+    </footer>
+
+    <!-- ================= SCRIPTS ================= -->
+    <script>
+      // --- Kustom Kursor ---
+      const dot = document.getElementById("cursor-dot");
+      const outline = document.getElementById("cursor-outline");
+      window.addEventListener("mousemove", (e) => {
+        dot.style.left = `${e.clientX}px`;
+        dot.style.top = `${e.clientY}px`;
+        setTimeout(() => {
+          outline.style.left = `${e.clientX}px`;
+          outline.style.top = `${e.clientY}px`;
+        }, 50);
+      });
+      document.querySelectorAll("a, button, .tilt-card").forEach((el) => {
+        el.addEventListener("mouseenter", () => {
+          outline.style.width = "60px";
+          outline.style.height = "60px";
+          outline.style.backgroundColor = "rgba(0, 240, 255, 0.1)";
+          dot.style.transform = "translate(-50%, -50%) scale(1.5)";
+        });
+        el.addEventListener("mouseleave", () => {
+          outline.style.width = "40px";
+          outline.style.height = "40px";
+          outline.style.backgroundColor = "transparent";
+          dot.style.transform = "translate(-50%, -50%) scale(1)";
+        });
+      });
+
+      // --- 3D Tilt Effect ---
+      document.querySelectorAll(".tilt-card").forEach((card) => {
+        card.addEventListener("mousemove", (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          const centerX = rect.width / 2;
+          const centerY = rect.height / 2;
+          const rotateX = ((y - centerY) / centerY) * -10;
+          const rotateY = ((x - centerX) / centerX) * 10;
+          card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+        });
+        card.addEventListener("mouseleave", () => {
+          card.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)";
+        });
+      });
+
+      // --- Tab System ---
+      function openPdfTab(evt, tabName) {
+        // Sembunyikan semua konten tab
+        document.querySelectorAll(".tab-content").forEach((tc) => {
+          tc.style.display = "none";
+          tc.classList.remove("active");
+        });
+        // Hapus active dari semua tombol
+        document.querySelectorAll(".tab-btn").forEach((btn) => btn.classList.remove("active"));
+        // Tampilkan tab yang dipilih
+        const activeTab = document.getElementById(tabName);
+        activeTab.style.display = "block";
+        setTimeout(() => activeTab.classList.add("active"), 10);
+        evt.currentTarget.classList.add("active");
+      }
+      // Set default tab
+      document.getElementById("tab-modul").style.display = "block";
+      document.querySelector(".tab-btn.active")?.classList.add("active");
+
+      // --- Network Canvas ---
+      const canvas = document.getElementById("networkCanvas");
+      const ctx = canvas.getContext("2d");
+      let width,
+        height,
+        particles = [];
+      function resize() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      }
+      window.addEventListener("resize", resize);
+      resize();
+      class Particle {
+        constructor() {
+          this.x = Math.random() * width;
+          this.y = Math.random() * height;
+          this.vx = (Math.random() - 0.5) * 1;
+          this.vy = (Math.random() - 0.5) * 1;
+          this.radius = Math.random() * 2 + 1;
+        }
+        update() {
+          this.x += this.vx;
+          this.y += this.vy;
+          if (this.x < 0 || this.x > width) this.vx *= -1;
+          if (this.y < 0 || this.y > height) this.vy *= -1;
+        }
+        draw() {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+          ctx.fillStyle = "rgba(0, 240, 255, 0.5)";
+          ctx.fill();
+        }
+      }
+      for (let i = 0; i < 70; i++) particles.push(new Particle());
+      function animate() {
+        ctx.clearRect(0, 0, width, height);
+        particles.forEach((p, i) => {
+          p.update();
+          p.draw();
+          for (let j = i + 1; j < particles.length; j++) {
+            const p2 = particles[j];
+            const dx = p.x - p2.x,
+              dy = p.y - p2.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 120) {
+              ctx.beginPath();
+              ctx.moveTo(p.x, p.y);
+              ctx.lineTo(p2.x, p2.y);
+              ctx.strokeStyle = `rgba(0,240,255,${0.2 - dist / 600})`;
+              ctx.lineWidth = 1;
+              ctx.stroke();
+            }
+          }
+        });
+        requestAnimationFrame(animate);
+      }
+      animate();
+
+      // --- Reveal Scroll ---
+      function reveal() {
+        document.querySelectorAll(".reveal").forEach((el) => {
+          const windowHeight = window.innerHeight;
+          const elementTop = el.getBoundingClientRect().top;
+          if (elementTop < windowHeight - 80) el.classList.add("active");
+        });
+      }
+      window.addEventListener("scroll", reveal);
+      reveal();
+
+      // --- Mobile Menu ---
+      const hamburger = document.getElementById("hamburger");
+      const navMenu = document.getElementById("nav-menu");
+      hamburger.addEventListener("click", () => {
+        navMenu.classList.toggle("hidden");
+        hamburger.classList.toggle("active");
+      });
+      document.querySelectorAll(".dropbtn-mobile").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const content = btn.nextElementSibling;
+          content.classList.toggle("hidden");
+          const chevron = btn.querySelector(".chevron");
+          if (chevron) chevron.style.transform = content.classList.contains("hidden") ? "rotate(0deg)" : "rotate(180deg)";
+        });
+      });
+    </script>
+  </body>
+</html>

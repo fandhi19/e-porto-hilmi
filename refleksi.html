@@ -1,0 +1,707 @@
+<!doctype html>
+<html lang="id" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Refleksi Akhir PPL | E-Portofolio PPG Calon Guru</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+    <link rel="shortcut icon" href="logo.png" type="image/x-icon" />
+
+    <!-- Tailwind Kustom -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Poppins", "sans-serif"],
+              tech: ["Orbitron", "sans-serif"],
+            },
+            colors: {
+              unyBlue: "#0A3254",
+              unyYellow: "#F2A900",
+              techCyan: "#00F0FF",
+              darkBg: "#050B14",
+            },
+          },
+        },
+      };
+    </script>
+
+    <!-- Kustom CSS -->
+    <style>
+      body {
+        background-color: #050b14;
+        color: white;
+        overflow-x: hidden;
+        cursor: none;
+      }
+
+      /* --- Kursor Kustom --- */
+      #cursor-dot {
+        width: 8px;
+        height: 8px;
+        background-color: #00f0ff;
+        border-radius: 50%;
+        position: fixed;
+        pointer-events: none;
+        z-index: 9999;
+        box-shadow:
+          0 0 10px #00f0ff,
+          0 0 20px #00f0ff;
+        transform: translate(-50%, -50%);
+        transition:
+          width 0.2s,
+          height 0.2s;
+      }
+      #cursor-outline {
+        width: 40px;
+        height: 40px;
+        border: 1px solid rgba(0, 240, 255, 0.5);
+        border-radius: 50%;
+        position: fixed;
+        pointer-events: none;
+        z-index: 9998;
+        transform: translate(-50%, -50%);
+        transition:
+          left 0.1s ease-out,
+          top 0.1s ease-out,
+          width 0.2s,
+          height 0.2s;
+      }
+
+      /* --- Animasi Background Sirkuit --- */
+      .grid-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-image: linear-gradient(to right, rgba(0, 240, 255, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(0, 240, 255, 0.05) 1px, transparent 1px);
+        background-size: 50px 50px;
+        z-index: -2;
+        transform: perspective(500px) rotateX(60deg) translateY(-100px) translateZ(-200px);
+        animation: gridMove 20s linear infinite;
+      }
+      @keyframes gridMove {
+        0% {
+          transform: perspective(500px) rotateX(60deg) translateY(0) translateZ(-200px);
+        }
+        100% {
+          transform: perspective(500px) rotateX(60deg) translateY(50px) translateZ(-200px);
+        }
+      }
+
+      /* --- Glassmorphism & Neon --- */
+      .glass-nav {
+        background: rgba(5, 11, 20, 0.7);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+      }
+      .glass-card {
+        background: rgba(10, 50, 84, 0.3);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(0, 240, 255, 0.1);
+        border-radius: 16px;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        transform-style: preserve-3d;
+      }
+      .glass-card:hover {
+        border-color: #00f0ff;
+        box-shadow:
+          0 0 20px rgba(0, 240, 255, 0.3),
+          inset 0 0 15px rgba(0, 240, 255, 0.1);
+      }
+      .glass-card > * {
+        transform: translateZ(30px);
+      }
+
+      .text-gradient {
+        background: linear-gradient(90deg, #00f0ff, #f2a900);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .btn-neon {
+        position: relative;
+        overflow: hidden;
+        transition: 0.3s;
+        z-index: 1;
+      }
+      .btn-neon::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.4), transparent);
+        transition: 0.5s;
+        z-index: -1;
+      }
+      .btn-neon:hover::before {
+        left: 100%;
+      }
+      .btn-neon:hover {
+        box-shadow: 0 0 15px #00f0ff;
+        text-shadow: 0 0 5px #00f0ff;
+      }
+
+      .reveal {
+        opacity: 0;
+        transform: translateY(50px);
+        transition: all 0.8s ease-out;
+      }
+      .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .tilt-card {
+        transition: transform 0.1s ease-out;
+      }
+
+      /* Stepper */
+      .stepper-track {
+        position: absolute;
+        top: 28px;
+        left: 10%;
+        right: 10%;
+        height: 2px;
+        background: rgba(0, 240, 255, 0.2);
+        z-index: 0;
+      }
+      .stepper-wrapper {
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 2rem 0;
+      }
+      .step-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        position: relative;
+        z-index: 1;
+        width: 120px;
+      }
+      .step-icon {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: rgba(10, 50, 84, 0.8);
+        border: 2px solid rgba(0, 240, 255, 0.4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        color: #00f0ff;
+        margin-bottom: 0.75rem;
+        transition: all 0.3s;
+        backdrop-filter: blur(6px);
+      }
+      .step-item.active-step .step-icon {
+        background: rgba(0, 240, 255, 0.15);
+        border-color: #00f0ff;
+        box-shadow: 0 0 20px rgba(0, 240, 255, 0.5);
+        color: #fff;
+      }
+      .icon-glow {
+        box-shadow: 0 0 20px rgba(0, 240, 255, 0.5);
+      }
+      .step-item h3 {
+        font-family: "Orbitron", sans-serif;
+        font-size: 0.9rem;
+        margin-bottom: 0.25rem;
+        color: #fff;
+      }
+      .step-item p {
+        font-size: 0.75rem;
+        color: #aaa;
+        line-height: 1.4;
+      }
+
+      /* Insight grid */
+      .insight-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1rem;
+        margin-top: 1.5rem;
+      }
+
+      /* Poin Badge */
+      .point-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: rgba(0, 240, 255, 0.1);
+        border: 1px solid rgba(0, 240, 255, 0.4);
+        border-radius: 999px;
+        padding: 0.3rem 1rem;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: #00f0ff;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        font-family: "Orbitron", sans-serif;
+      }
+    </style>
+  </head>
+  <body class="antialiased font-sans">
+    <!-- Custom Cursor -->
+    <div id="cursor-dot"></div>
+    <div id="cursor-outline"></div>
+
+    <!-- Background Animasi Sirkuit -->
+    <div class="grid-bg"></div>
+    <canvas id="networkCanvas" class="fixed top-0 left-0 w-full h-full -z-10 opacity-40"></canvas>
+
+    <!-- ================= NAVBAR ================= -->
+    <header class="glass-nav fixed w-full top-0 z-50 transition-all duration-300" id="navbar">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-20">
+          <div class="flex items-center space-x-3 cursor-pointer hover:scale-105 transition-transform">
+            <img src="logo.png" alt="Logo UNY" class="w-10 h-10 rounded-full border border-techCyan shadow-[0_0_10px_rgba(0,240,255,0.5)]" />
+            <div class="flex flex-col">
+              <span class="font-tech font-bold text-xl tracking-wider text-white">E-PORTOFOLIO <span class="text-unyYellow">PPG</span></span>
+              <span class="text-xs text-techCyan tracking-widest uppercase">Prajabatan 2026</span>
+            </div>
+          </div>
+
+          <div class="hidden md:flex space-x-8 items-center">
+            <a href="index.html" class="text-gray-300 hover:text-techCyan transition font-medium text-sm uppercase tracking-wide relative group">
+              Beranda<span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-techCyan transition-all duration-300 group-hover:w-full"></span>
+            </a>
+            <div class="relative group">
+              <button class="text-gray-300 hover:text-techCyan transition font-medium text-sm uppercase tracking-wide flex items-center gap-1">E-Portofolio 1 <i class="fa-solid fa-chevron-down text-[10px] ml-1"></i></button>
+              <div class="absolute hidden group-hover:block bg-darkBg/80 backdrop-blur-md border border-techCyan/20 rounded-lg mt-2 py-2 w-56 shadow-xl z-50">
+                <a href="profile.html" class="block px-4 py-2 text-sm text-gray-300 hover:text-techCyan hover:bg-white/5"><i class="fa-solid fa-user-graduate mr-2 w-4"></i>Profil Mahasiswa</a>
+                <a href="artefak.html" class="block px-4 py-2 text-sm text-gray-300 hover:text-techCyan hover:bg-white/5"><i class="fa-solid fa-file-waveform mr-2 w-4"></i>Artefak Produk</a>
+                <a href="penilaian.html" class="block px-4 py-2 text-sm text-gray-300 hover:text-techCyan hover:bg-white/5"><i class="fa-solid fa-list-check mr-2 w-4"></i>Penilaian GP</a>
+                <a href="modelguru.html" class="block px-4 py-2 text-sm text-gray-300 hover:text-techCyan hover:bg-white/5"><i class="fa-solid fa-bullseye mr-2 w-4"></i>Model Guru</a>
+              </div>
+            </div>
+            <div class="relative group">
+              <button class="text-gray-300 hover:text-techCyan transition font-medium text-sm uppercase tracking-wide flex items-center gap-1">E-Portofolio 2 <i class="fa-solid fa-chevron-down text-[10px] ml-1"></i></button>
+              <div class="absolute hidden group-hover:block bg-darkBg/80 backdrop-blur-md border border-techCyan/20 rounded-lg mt-2 py-2 w-56 shadow-xl z-50">
+                <a href="refleksi.html" class="block px-4 py-2 text-sm text-gray-300 hover:text-techCyan hover:bg-white/5"><i class="fa-solid fa-arrows-rotate mr-2 w-4"></i>Refleksi Akhir</a>
+                <a href="filosofi.html" class="block px-4 py-2 text-sm text-gray-300 hover:text-techCyan hover:bg-white/5"><i class="fa-solid fa-seedling mr-2 w-4"></i>Filosofi Mengajar</a>
+              </div>
+            </div>
+            <a href="dokumentasi.html" class="text-gray-300 hover:text-techCyan transition font-medium text-sm uppercase tracking-wide relative group">
+              Dokumentasi<span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-techCyan transition-all duration-300 group-hover:w-full"></span>
+            </a>
+          </div>
+
+          <div class="md:hidden flex items-center">
+            <button id="hamburger" class="text-techCyan hover:text-white focus:outline-none text-2xl">
+              <i class="fa-solid fa-bars"></i>
+            </button>
+          </div>
+        </div>
+        <div id="nav-menu" class="md:hidden hidden flex-col space-y-2 pb-4">
+          <a href="index.html" class="block text-gray-300 hover:text-techCyan py-2">Beranda</a>
+          <div class="dropdown-mobile">
+            <button class="dropbtn-mobile w-full text-left text-gray-300 hover:text-techCyan py-2 flex justify-between items-center">E-Portofolio 1 <i class="fa-solid fa-chevron-down chevron text-xs"></i></button>
+            <div class="dropdown-content-mobile hidden pl-4 space-y-1">
+              <a href="profile.html" class="block text-gray-400 hover:text-techCyan py-1">Profil Mahasiswa</a>
+              <a href="artefak.html" class="block text-gray-400 hover:text-techCyan py-1">Artefak Produk</a>
+              <a href="penilaian.html" class="block text-gray-400 hover:text-techCyan py-1">Penilaian GP</a>
+              <a href="modelguru.html" class="block text-gray-400 hover:text-techCyan py-1">Model Guru</a>
+            </div>
+          </div>
+          <div class="dropdown-mobile">
+            <button class="dropbtn-mobile w-full text-left text-gray-300 hover:text-techCyan py-2 flex justify-between items-center">E-Portofolio 2 <i class="fa-solid fa-chevron-down chevron text-xs"></i></button>
+            <div class="dropdown-content-mobile hidden pl-4 space-y-1">
+              <a href="refleksi.html" class="block text-gray-400 hover:text-techCyan py-1">Refleksi Akhir</a>
+              <a href="filosofi.html" class="block text-gray-400 hover:text-techCyan py-1">Filosofi Mengajar</a>
+            </div>
+          </div>
+          <a href="dokumentasi.html" class="block text-gray-300 hover:text-techCyan py-2">Dokumentasi</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- ================= MAIN CONTENT ================= -->
+    <main class="pt-24">
+      <!-- Hero Section -->
+      <section class="py-16 relative z-10">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+          <div class="inline-block mb-4 px-4 py-1 rounded-full border border-unyYellow/50 bg-unyYellow/10 text-unyYellow text-sm font-medium tracking-widest uppercase shadow-[0_0_15px_rgba(242,169,0,0.2)]">
+            <i class="fa-solid fa-microscope mr-2"></i> Evaluasi PPL Terbimbing
+          </div>
+          <h1 class="text-5xl md:text-6xl font-tech font-bold mb-4">Refleksi Akhir <span class="text-gradient">Pembelajaran</span></h1>
+          <p class="text-gray-400 text-lg max-w-2xl mx-auto">
+            Pelaksanaan PPL Terbimbing menjadi pengalaman yang sangat berharga dalam proses pembentukan diri saya sebagai calon guru profesional. Kegiatan ini memberikan kesempatan untuk belajar secara langsung mengenai dunia pendidikan di
+            sekolah, mulai dari orientasi hingga praktik pembelajaran terbimbing.
+          </p>
+        </div>
+      </section>
+
+      <!-- Alur Pengalaman Belajar (Stepper) -->
+      <section class="py-8 relative z-10">
+        <div class="max-w-5xl mx-auto px-4">
+          <div class="text-center mb-12 reveal">
+            <h2 class="text-3xl md:text-4xl font-tech font-bold text-white mb-4">Alur <span class="text-gradient">Pengalaman Belajar</span></h2>
+            <p class="text-gray-400">Empat tahapan krusial yang membentuk pondasi pedagogi saya di lapangan.</p>
+          </div>
+
+          <div class="stepper-wrapper reveal relative">
+            <div class="stepper-track hidden md:block"></div>
+            <div class="step-item">
+              <div class="step-icon"><i class="fa-solid fa-map-location-dot"></i></div>
+              <h3>1. Orientasi</h3>
+              <p>Memahami budaya sekolah, tata tertib, karakteristik peserta didik, serta sistem pembelajaran yang diterapkan.</p>
+            </div>
+            <div class="step-item">
+              <div class="step-icon"><i class="fa-solid fa-binoculars"></i></div>
+              <h3>2. Observasi</h3>
+              <p>Mempelajari cara guru mengelola kelas, menyampaikan materi, dan menciptakan suasana belajar yang aktif.</p>
+            </div>
+            <div class="step-item">
+              <div class="step-icon"><i class="fa-solid fa-hands-holding-child"></i></div>
+              <h3>3. Asistensi</h3>
+              <p>Membantu menyiapkan media, mendampingi siswa, dan memahami pentingnya kesiapan perangkat pembelajaran.</p>
+            </div>
+            <div class="step-item active-step">
+              <div class="step-icon icon-glow"><i class="fa-solid fa-person-chalkboard"></i></div>
+              <h3>4. Praktik Terbimbing</h3>
+              <p>Menyusun modul ajar, mengelola kelas, serta melakukan refleksi sebagai fasilitator, motivator, dan teladan.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Poin A: Pembelajaran yang Diperoleh -->
+      <section class="py-12 relative z-10">
+        <div class="max-w-6xl mx-auto px-4">
+          <div class="glass-card p-8 tilt-card reveal">
+            <div class="flex items-center gap-3 mb-6">
+              <span class="point-badge">Poin A</span>
+              <h2 class="text-3xl font-tech font-bold text-white">Pembelajaran yang <span class="text-gradient">Diperoleh</span></h2>
+            </div>
+            <p class="text-gray-300 mb-6">Seluruh rangkaian PPL Terbimbing memberikan pengalaman, pengetahuan, dan keterampilan yang sangat bermanfaat sebagai bekal menuju tahap PPL Mandiri.</p>
+
+            <div class="insight-grid">
+              <div class="glass-card p-5 tilt-card">
+                <i class="fa-solid fa-users-rays text-3xl text-techCyan mb-3"></i>
+                <h4 class="font-bold text-white mb-2">Orientasi</h4>
+                <p class="text-gray-400 text-sm">
+                  Saya belajar memahami budaya sekolah, tata tertib, karakteristik peserta didik, serta pentingnya komunikasi dan kerja sama seluruh warga sekolah dalam menciptakan lingkungan belajar yang kondusif.
+                </p>
+              </div>
+              <div class="glass-card p-5 tilt-card">
+                <i class="fa-solid fa-eye text-3xl text-unyYellow mb-3"></i>
+                <h4 class="font-bold text-white mb-2">Observasi</h4>
+                <p class="text-gray-400 text-sm">
+                  Dari kegiatan observasi, saya memahami bahwa keberhasilan pembelajaran tidak hanya ditentukan oleh penguasaan materi, tetapi juga kemampuan guru menciptakan suasana belajar yang aktif dan menyenangkan.
+                </p>
+              </div>
+              <div class="glass-card p-5 tilt-card">
+                <i class="fa-solid fa-hand-holding-heart text-3xl text-techCyan mb-3"></i>
+                <h4 class="font-bold text-white mb-2">Asistensi</h4>
+                <p class="text-gray-400 text-sm">Tahap asistensi memberikan pengalaman nyata tentang pentingnya kesiapan perangkat pembelajaran dan kemampuan beradaptasi dengan situasi kelas.</p>
+              </div>
+              <div class="glass-card p-5 tilt-card">
+                <i class="fa-solid fa-chalkboard-user text-3xl text-unyYellow mb-3"></i>
+                <h4 class="font-bold text-white mb-2">Praktik Terbimbing</h4>
+                <p class="text-gray-400 text-sm">
+                  Saya belajar menyusun modul ajar, menentukan metode dan media, mengelola kelas, serta melakukan refleksi. Guru harus mampu menjadi fasilitator, motivator, sekaligus teladan bagi peserta didik.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Poin B: Pengalaman Menantang & Solusi -->
+      <section class="py-12 relative z-10">
+        <div class="max-w-6xl mx-auto px-4">
+          <div class="text-center mb-8 reveal">
+            <span class="point-badge mb-3">Poin B</span>
+            <h2 class="text-3xl md:text-4xl font-tech font-bold text-white mb-4">Pengalaman <span class="text-gradient">Menantang</span> & Solusi</h2>
+            <p class="text-gray-400">Dinamika yang terjadi di lapangan dan bagaimana saya menghadapinya.</p>
+          </div>
+
+          <div class="flex flex-col md:flex-row items-center gap-6 reveal">
+            <div class="glass-card p-8 tilt-card flex-1 text-center">
+              <i class="fa-solid fa-cloud-bolt text-5xl text-techCyan mb-4"></i>
+              <h3 class="text-xl font-bold text-white mb-3">Tantangan yang Dihadapi</h3>
+              <p class="text-gray-400 text-sm">
+                Mengelola kelas dengan karakteristik peserta didik yang beragam. Tidak semua siswa memiliki tingkat fokus dan motivasi belajar yang sama sehingga suasana kelas terkadang kurang kondusif. Selain itu, mengatur waktu
+                pembelajaran agar seluruh kegiatan terlaksana sesuai rencana.
+              </p>
+            </div>
+
+            <div class="flex items-center justify-center text-3xl text-techCyan/50">
+              <i class="fa-solid fa-arrow-right-arrow-left"></i>
+            </div>
+
+            <div class="glass-card p-8 tilt-card flex-1 text-center">
+              <i class="fa-solid fa-lightbulb text-5xl text-unyYellow mb-4"></i>
+              <h3 class="text-xl font-bold text-white mb-3">Solusi yang Dilakukan</h3>
+              <p class="text-gray-400 text-sm">
+                Saya menggunakan metode pembelajaran yang lebih interaktif dan melibatkan siswa secara aktif, seperti diskusi kelompok, permainan edukatif, dan pembelajaran berbasis praktik. Saya juga membangun komunikasi yang baik dengan
+                peserta didik serta membuat perencanaan pembelajaran yang lebih terstruktur.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Poin C: Umpan Balik & Saran Konstruktif -->
+      <section class="py-12 relative z-10">
+        <div class="max-w-5xl mx-auto px-4">
+          <div class="glass-card p-8 tilt-card reveal">
+            <div class="flex items-center gap-3 mb-8">
+              <span class="point-badge">Poin C</span>
+              <h2 class="text-3xl font-tech font-bold text-white">Umpan Balik & <span class="text-white">Saran Konstruktif</span></h2>
+            </div>
+
+            <div class="flex flex-col md:flex-row gap-8 items-start">
+              <div class="flex-1 glass-card p-6 flex gap-4">
+                <i class="fa-solid fa-comments text-3xl text-techCyan mt-1"></i>
+                <div>
+                  <h4 class="font-bold text-white mb-2">Masukan dari Guru Pamong & DPL</h4>
+                  <p class="text-gray-400 text-sm">
+                    "Saya diberikan masukan untuk lebih meningkatkan kemampuan dalam mengelola kelas, terutama menjaga fokus dan keterlibatan seluruh peserta didik. Saya juga disarankan untuk lebih percaya diri dalam menyampaikan materi dan
+                    memperkuat penguasaan kelas."
+                  </p>
+                </div>
+              </div>
+
+              <div class="flex items-center justify-center text-2xl text-techCyan/50 transform md:rotate-90">
+                <i class="fa-solid fa-angles-down"></i>
+              </div>
+
+              <div class="flex-1 glass-card p-6 flex gap-4">
+                <i class="fa-solid fa-rocket text-3xl text-unyYellow mt-1"></i>
+                <div>
+                  <h4 class="font-bold text-white mb-2">Rencana Perbaikan (PPL Mandiri)</h4>
+                  <p class="text-gray-400 text-sm">
+                    Saya berkomitmen untuk terus melakukan refleksi, memperbaiki kekurangan, dan mengembangkan kompetensi diri. Saya akan menggunakan media pembelajaran yang lebih variatif dan inovatif agar peserta didik lebih aktif dan
+                    antusias, serta meningkatkan rasa percaya diri dalam mengelola kelas.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Komitmen & Kutipan -->
+      <section class="py-12 relative z-10">
+        <div class="max-w-4xl mx-auto px-4 text-center reveal">
+          <p class="text-gray-300 leading-relaxed mb-8">
+            Dari seluruh proses PPL Terbimbing ini, saya menyadari bahwa menjadi seorang guru profesional memerlukan proses belajar yang terus-menerus. Oleh karena itu, saya berkomitmen untuk terus melakukan refleksi, memperbaiki
+            kekurangan, dan mengembangkan kompetensi diri agar mampu melaksanakan PPL Mandiri dengan lebih baik serta menjadi guru yang profesional, kreatif, dan inspiratif bagi peserta didik.
+          </p>
+          <div class="relative inline-block">
+            <i class="fa-solid fa-quote-left text-6xl text-techCyan/20 absolute -top-6 -left-8"></i>
+            <blockquote class="text-xl font-tech font-bold text-white italic border-l-4 border-unyYellow pl-6 py-2">
+              Guru yang baik adalah guru yang terus belajar, memperbaiki diri, dan mampu menginspirasi peserta didiknya untuk berkembang.
+            </blockquote>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="glass-nav border-t border-gray-800 mt-20 relative z-10">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div>
+            <h3 class="font-tech text-white text-lg">E-Portofolio<span class="text-unyYellow"> PPG</span></h3>
+            <p class="text-gray-400 text-sm mt-3">Ruang rekam jejak Praktik Pengalaman Lapangan (PPL) 1. Disusun sebagai dokumentasi dan refleksi perjalanan menjadi guru profesional.</p>
+          </div>
+          <div>
+            <h4 class="font-bold text-white flex items-center gap-2"><i class="fa-solid fa-book-open text-techCyan"></i> E-Portofolio 1</h4>
+            <ul class="mt-3 space-y-2 text-sm text-gray-400">
+              <li>
+                <a href="profile.html" class="hover:text-techCyan transition"><i class="fa-solid fa-user-graduate mr-2 w-4"></i>Profil Mahasiswa</a>
+              </li>
+              <li>
+                <a href="artefak.html" class="hover:text-techCyan transition"><i class="fa-solid fa-file-waveform mr-2 w-4"></i>Artefak Produk</a>
+              </li>
+              <li>
+                <a href="penilaian.html" class="hover:text-techCyan transition"><i class="fa-solid fa-list-check mr-2 w-4"></i>Instrumen Penilaian</a>
+              </li>
+              <li>
+                <a href="modelguru.html" class="hover:text-techCyan transition"><i class="fa-solid fa-chalkboard-user mr-2 w-4"></i>Model Guru</a>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-bold text-white flex items-center gap-2"><i class="fa-solid fa-layer-group text-techCyan"></i> E-Portofolio 2</h4>
+            <ul class="mt-3 space-y-2 text-sm text-gray-400">
+              <li>
+                <a href="refleksi.html" class="hover:text-techCyan transition"><i class="fa-solid fa-arrows-rotate mr-2 w-4"></i>Refleksi Akhir</a>
+              </li>
+              <li>
+                <a href="filosofi.html" class="hover:text-techCyan transition"><i class="fa-solid fa-seedling mr-2 w-4"></i>Filosofi Mengajar</a>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-bold text-white flex items-center gap-2"><i class="fa-solid fa-location-dot text-techCyan"></i> Lokasi LPTK</h4>
+            <p class="text-gray-400 text-sm mt-3"><i class="fa-solid fa-building-columns mr-1"></i> Universitas Negeri Yogyakarta</p>
+            <div class="rounded-lg overflow-hidden mt-3 border border-techCyan/20">
+              <iframe src="https://maps.google.com/maps?q=Universitas%20Negeri%20Yogyakarta&t=&z=15&ie=UTF8&iwloc=&output=embed" width="100%" height="120" style="border: 0" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+            <div class="flex gap-3 mt-4 text-sm text-gray-400">
+              <a href="mailto:Hilmibanda@gmail.com" class="hover:text-techCyan"><i class="fa-solid fa-envelope mr-1"></i> Email</a>
+              <a href="https://www.instagram.com/hilmibanda/" target="_blank" class="hover:text-techCyan"><i class="fa-brands fa-instagram mr-1"></i> Instagram</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="border-t border-gray-800 py-4">
+        <div class="max-w-7xl mx-auto px-4 text-center text-gray-500 text-xs">© 2026 Muhammad Hilmi Bandanuji - E-Portofolio PPL PPG. Semua Hak Cipta Dilindungi.</div>
+      </div>
+    </footer>
+
+    <!-- ================= SCRIPTS ================= -->
+    <script>
+      // --- Kustom Kursor ---
+      const dot = document.getElementById("cursor-dot");
+      const outline = document.getElementById("cursor-outline");
+      window.addEventListener("mousemove", (e) => {
+        dot.style.left = `${e.clientX}px`;
+        dot.style.top = `${e.clientY}px`;
+        setTimeout(() => {
+          outline.style.left = `${e.clientX}px`;
+          outline.style.top = `${e.clientY}px`;
+        }, 50);
+      });
+      document.querySelectorAll("a, button, .tilt-card").forEach((el) => {
+        el.addEventListener("mouseenter", () => {
+          outline.style.width = "60px";
+          outline.style.height = "60px";
+          outline.style.backgroundColor = "rgba(0, 240, 255, 0.1)";
+          dot.style.transform = "translate(-50%, -50%) scale(1.5)";
+        });
+        el.addEventListener("mouseleave", () => {
+          outline.style.width = "40px";
+          outline.style.height = "40px";
+          outline.style.backgroundColor = "transparent";
+          dot.style.transform = "translate(-50%, -50%) scale(1)";
+        });
+      });
+
+      // --- 3D Tilt Effect ---
+      document.querySelectorAll(".tilt-card").forEach((card) => {
+        card.addEventListener("mousemove", (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          const centerX = rect.width / 2;
+          const centerY = rect.height / 2;
+          const rotateX = ((y - centerY) / centerY) * -10;
+          const rotateY = ((x - centerX) / centerX) * 10;
+          card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+        });
+        card.addEventListener("mouseleave", () => {
+          card.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)";
+        });
+      });
+
+      // --- Network Canvas ---
+      const canvas = document.getElementById("networkCanvas");
+      const ctx = canvas.getContext("2d");
+      let width,
+        height,
+        particles = [];
+      function resize() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      }
+      window.addEventListener("resize", resize);
+      resize();
+      class Particle {
+        constructor() {
+          this.x = Math.random() * width;
+          this.y = Math.random() * height;
+          this.vx = (Math.random() - 0.5) * 1;
+          this.vy = (Math.random() - 0.5) * 1;
+          this.radius = Math.random() * 2 + 1;
+        }
+        update() {
+          this.x += this.vx;
+          this.y += this.vy;
+          if (this.x < 0 || this.x > width) this.vx *= -1;
+          if (this.y < 0 || this.y > height) this.vy *= -1;
+        }
+        draw() {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+          ctx.fillStyle = "rgba(0, 240, 255, 0.5)";
+          ctx.fill();
+        }
+      }
+      for (let i = 0; i < 70; i++) particles.push(new Particle());
+      function animate() {
+        ctx.clearRect(0, 0, width, height);
+        particles.forEach((p, i) => {
+          p.update();
+          p.draw();
+          for (let j = i + 1; j < particles.length; j++) {
+            const p2 = particles[j];
+            const dx = p.x - p2.x,
+              dy = p.y - p2.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 120) {
+              ctx.beginPath();
+              ctx.moveTo(p.x, p.y);
+              ctx.lineTo(p2.x, p2.y);
+              ctx.strokeStyle = `rgba(0,240,255,${0.2 - dist / 600})`;
+              ctx.lineWidth = 1;
+              ctx.stroke();
+            }
+          }
+        });
+        requestAnimationFrame(animate);
+      }
+      animate();
+
+      // --- Reveal Scroll ---
+      function reveal() {
+        document.querySelectorAll(".reveal").forEach((el) => {
+          const windowHeight = window.innerHeight;
+          const elementTop = el.getBoundingClientRect().top;
+          if (elementTop < windowHeight - 80) el.classList.add("active");
+        });
+      }
+      window.addEventListener("scroll", reveal);
+      reveal();
+
+      // --- Mobile Menu ---
+      const hamburger = document.getElementById("hamburger");
+      const navMenu = document.getElementById("nav-menu");
+      hamburger.addEventListener("click", () => {
+        navMenu.classList.toggle("hidden");
+        hamburger.classList.toggle("active");
+      });
+      document.querySelectorAll(".dropbtn-mobile").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const content = btn.nextElementSibling;
+          content.classList.toggle("hidden");
+          const chevron = btn.querySelector(".chevron");
+          if (chevron) chevron.style.transform = content.classList.contains("hidden") ? "rotate(0deg)" : "rotate(180deg)";
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,570 @@
+<!doctype html>
+<html lang="id" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>E-Portofolio PPG Calon Guru | Generasi Emas</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="shortcut icon" href="logo.png" type="image/x-icon" />
+    <link rel="stylesheet" href="CSS/style.css" />
+
+    <!-- Tailwind Kustom -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Poppins", "sans-serif"],
+              tech: ["Orbitron", "sans-serif"],
+            },
+            colors: {
+              unyBlue: "#0A3254",
+              unyYellow: "#F2A900",
+              techCyan: "#00F0FF",
+              darkBg: "#050B14",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body class="antialiased font-sans">
+    <!-- Custom Cursor -->
+    <div id="cursor-dot"></div>
+    <div id="cursor-outline"></div>
+
+    <!-- Background Animasi Sirkuit -->
+    <div class="grid-bg"></div>
+    <canvas id="networkCanvas" class="fixed top-0 left-0 w-full h-full -z-10 opacity-40"></canvas>
+
+    <!-- ================= NAVBAR ================= -->
+    <header class="glass-nav fixed w-full top-0 z-50 transition-all duration-300" id="navbar">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-20">
+          <!-- Logo & Brand -->
+          <div class="flex items-center space-x-3 cursor-pointer hover:scale-105 transition-transform">
+            <img src="logo.png" alt="Logo" class="w-10 h-10 rounded-full border border-techCyan shadow-[0_0_10px_rgba(0,240,255,0.5)]" />
+            <div class="flex flex-col">
+              <span class="font-tech font-bold text-xl tracking-wider text-white">E-PORTOFOLIO <span class="text-unyYellow">PPG</span></span>
+              <span class="text-xs text-techCyan tracking-widest uppercase">Prajabatan 2026</span>
+            </div>
+          </div>
+
+          <!-- Desktop Menu -->
+          <div class="hidden md:flex space-x-8 items-center">
+            <a href="index.html" class="text-gray-300 hover:text-techCyan transition font-medium text-sm uppercase tracking-wide relative group">
+              Beranda<span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-techCyan transition-all duration-300 group-hover:w-full"></span>
+            </a>
+            <div class="relative group">
+              <button class="text-gray-300 hover:text-techCyan transition font-medium text-sm uppercase tracking-wide flex items-center gap-1">E-Portofolio 1 <i class="fa-solid fa-chevron-down text-[10px] ml-1"></i></button>
+              <div class="absolute hidden group-hover:block bg-darkBg/80 backdrop-blur-md border border-techCyan/20 rounded-lg mt-2 py-2 w-56 shadow-xl">
+                <a href="profile.html" class="block px-4 py-2 text-sm text-gray-300 hover:text-techCyan hover:bg-white/5"><i class="fa-solid fa-user-graduate mr-2 w-4"></i>Profil Mahasiswa</a>
+                <a href="artefak.html" class="block px-4 py-2 text-sm text-gray-300 hover:text-techCyan hover:bg-white/5"><i class="fa-solid fa-file-waveform mr-2 w-4"></i>Artefak Produk</a>
+                <a href="penilaian.html" class="block px-4 py-2 text-sm text-gray-300 hover:text-techCyan hover:bg-white/5"><i class="fa-solid fa-list-check mr-2 w-4"></i>Penilaian GP</a>
+                <a href="modelguru.html" class="block px-4 py-2 text-sm text-gray-300 hover:text-techCyan hover:bg-white/5"><i class="fa-solid fa-bullseye mr-2 w-4"></i>Model Guru</a>
+              </div>
+            </div>
+            <div class="relative group">
+              <button class="text-gray-300 hover:text-techCyan transition font-medium text-sm uppercase tracking-wide flex items-center gap-1">E-Portofolio 2 <i class="fa-solid fa-chevron-down text-[10px] ml-1"></i></button>
+              <div class="absolute hidden group-hover:block bg-darkBg/80 backdrop-blur-md border border-techCyan/20 rounded-lg mt-2 py-2 w-56 shadow-xl">
+                <a href="refleksi.html" class="block px-4 py-2 text-sm text-gray-300 hover:text-techCyan hover:bg-white/5"><i class="fa-solid fa-arrows-rotate mr-2 w-4"></i>Refleksi Akhir</a>
+                <a href="filosofi.html" class="block px-4 py-2 text-sm text-gray-300 hover:text-techCyan hover:bg-white/5"><i class="fa-solid fa-seedling mr-2 w-4"></i>Filosofi Mengajar</a>
+              </div>
+            </div>
+            <a href="dokumentasi.html" class="text-gray-300 hover:text-techCyan transition font-medium text-sm uppercase tracking-wide relative group">
+              Dokumentasi<span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-techCyan transition-all duration-300 group-hover:w-full"></span>
+            </a>
+          </div>
+
+          <!-- Mobile Menu Button -->
+          <div class="md:hidden flex items-center">
+            <button id="hamburger" class="text-techCyan hover:text-white focus:outline-none text-2xl">
+              <i class="fa-solid fa-bars"></i>
+            </button>
+          </div>
+        </div>
+        <!-- Mobile Menu Dropdown -->
+        <div id="nav-menu" class="md:hidden hidden flex-col space-y-2 pb-4">
+          <a href="index.html" class="block text-gray-300 hover:text-techCyan py-2">Beranda</a>
+          <div class="dropdown-mobile">
+            <button class="dropbtn-mobile w-full text-left text-gray-300 hover:text-techCyan py-2 flex justify-between items-center">E-Portofolio 1 <i class="fa-solid fa-chevron-down chevron text-xs"></i></button>
+            <div class="dropdown-content-mobile hidden pl-4 space-y-1">
+              <a href="profile.html" class="block text-gray-400 hover:text-techCyan py-1">Profil Mahasiswa</a>
+              <a href="artefak.html" class="block text-gray-400 hover:text-techCyan py-1">Artefak Produk</a>
+              <a href="penilaian.html" class="block text-gray-400 hover:text-techCyan py-1">Penilaian GP</a>
+              <a href="modelguru.html" class="block text-gray-400 hover:text-techCyan py-1">Model Guru</a>
+            </div>
+          </div>
+          <div class="dropdown-mobile">
+            <button class="dropbtn-mobile w-full text-left text-gray-300 hover:text-techCyan py-2 flex justify-between items-center">E-Portofolio 2 <i class="fa-solid fa-chevron-down chevron text-xs"></i></button>
+            <div class="dropdown-content-mobile hidden pl-4 space-y-1">
+              <a href="refleksi.html" class="block text-gray-400 hover:text-techCyan py-1">Refleksi Akhir</a>
+              <a href="filosofi.html" class="block text-gray-400 hover:text-techCyan py-1">Filosofi Mengajar</a>
+            </div>
+          </div>
+          <a href="dokumentasi.html" class="block text-gray-300 hover:text-techCyan py-2">Dokumentasi</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- ================= HERO SECTION ================= -->
+    <section class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+      <div class="absolute top-1/4 left-10 text-techCyan/20 text-9xl animate-pulse -z-10"><i class="fa-solid fa-dumbbell"></i></div>
+      <div class="absolute bottom-1/4 right-10 text-unyYellow/20 text-9xl animate-pulse -z-10" style="animation-delay: 1s"><i class="fa-solid fa-person-running"></i></div>
+
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+        <div class="inline-block mb-4 px-4 py-1 rounded-full border border-unyYellow/50 bg-unyYellow/10 text-unyYellow text-sm font-medium tracking-widest uppercase shadow-[0_0_15px_rgba(242,169,0,0.2)]">
+          <i class="fa-solid fa-medal mr-2"></i> Muhammad Hilmi Bandanuji - PPG Calon Guru
+        </div>
+
+        <h1 class="text-5xl md:text-7xl font-tech font-bold mb-6 leading-tight">
+          Calon Guru <br />
+          <span class="text-gradient">Profesional</span>
+        </h1>
+
+        <p class="mt-4 text-xl md:text-2xl text-gray-400 font-light mb-8 h-8 flex justify-center">
+          <span id="typewriter" class="typing-text"></span>
+        </p>
+
+        <p class="max-w-2xl mx-auto text-gray-400 mb-10 text-sm md:text-base leading-relaxed">
+          Selamat datang di E-Portofolio saya. Sebuah dedikasi mengintegrasikan ilmu olahraga dan pedagogi inovatif untuk membentuk karakter pelajar yang tangguh, bugar, dan menjunjung sportivitas.
+        </p>
+
+        <div class="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-6">
+          <a href="#overview" class="btn-neon px-8 py-3 bg-techCyan text-darkBg font-bold rounded-full font-tech tracking-wider hover:scale-105 flex items-center group">
+            Eksplorasi Visi <i class="fa-solid fa-arrow-down ml-2 group-hover:translate-y-1 transition-transform"></i>
+          </a>
+          <a href="#dokumen" class="btn-neon px-8 py-3 border border-unyYellow text-unyYellow font-bold rounded-full font-tech tracking-wider hover:bg-unyYellow/10 hover:scale-105 flex items-center group">
+            <i class="fa-solid fa-dumbbell mr-2"></i> Ruang Karya
+          </a>
+        </div>
+      </div>
+
+      <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+        <a href="#overview" class="text-gray-400 hover:text-techCyan transition">
+          <i class="fa-solid fa-angles-down text-2xl"></i>
+        </a>
+      </div>
+    </section>
+
+    <!-- ================= BENTO OVERVIEW ================= -->
+    <section id="overview" class="py-24 relative z-10">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16 reveal">
+          <h2 class="text-3xl md:text-5xl font-tech font-bold text-white mb-4">PEMBELAJARAN <span class="text-techCyan">VOKASIONAL</span></h2>
+          <div class="w-24 h-1 bg-gradient-to-r from-techCyan to-unyYellow mx-auto rounded-full mb-4"></div>
+          <p class="text-gray-400 max-w-2xl mx-auto">Pendekatan empiris yang mengutamakan nalar kritis, kemandirian teknis, dan budaya kerja industri.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <!-- Card 1 -->
+          <div class="glass-card p-6 tilt-card group cursor-pointer col-span-2">
+            <i class="fa-solid fa-microchip text-3xl text-techCyan mb-4 group-hover:scale-110 transition-transform"></i>
+            <h3 class="text-xl font-bold mb-2">Pembelajaran Autentik & Bermakna</h3>
+            <p class="text-gray-400 text-sm">
+              Merancang pengalaman belajar berkonteks industri nyata yang memantik rasa ingin tahu. Peserta didik diajak untuk aktif bereksplorasi, merangkai, dan menemukan solusi secara mandiri di bengkel praktikum.
+            </p>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="glass-card p-6 tilt-card group cursor-pointer">
+            <i class="fa-solid fa-screwdriver-wrench text-3xl text-unyYellow mb-4 group-hover:scale-110 transition-transform"></i>
+            <h3 class="text-xl font-bold mb-2">Strategi Troubleshooting</h3>
+            <p class="text-gray-400 text-sm">Memberikan ruang aman bagi <em>productive struggle</em>, di mana kegagalan sistem dilihat sebagai data untuk dianalisis dan diperbaiki.</p>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="glass-card p-6 tilt-card group cursor-pointer">
+            <i class="fa-solid fa-clipboard-check text-3xl text-techCyan mb-4 group-hover:scale-110 transition-transform"></i>
+            <h3 class="text-xl font-bold mb-2">Asesmen Holistik</h3>
+            <p class="text-gray-400 text-sm">Penilaian komprehensif yang mengukur pemahaman teori kognitif, presisi psikomotorik alat, dan kematangan sikap kerja.</p>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="glass-card p-6 tilt-card group cursor-pointer col-span-2 relative overflow-hidden">
+            <!-- Background image diganti dengan tema elektronika/industri -->
+            <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80')] bg-cover bg-center opacity-20 group-hover:opacity-30 transition-opacity"></div>
+            <div class="relative z-10">
+              <h3 class="text-xl font-bold mb-2">Budaya Industri & Karakter Profesional</h3>
+              <p class="text-gray-400 text-sm">
+                Menanamkan kedisiplinan, integritas, kolaborasi tim, serta Keselamatan dan Kesehatan Kerja (K3) untuk mencetak lulusan yang tangguh dan siap menghadapi tantangan dunia industri sesungguhnya.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= LPTK UNY ================= -->
+    <section id="lptk" class="py-24 relative z-10">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16 reveal">
+          <h2 class="text-3xl md:text-5xl font-tech font-bold text-white mb-4">LPTK <span class="text-gradient">Universitas Negeri Yogyakarta</span></h2>
+          <p class="text-gray-400 max-w-2xl mx-auto">Lembaga Pendidikan Tenaga Kependidikan (LPTK) penyelenggara program PPG Prajabatan yang unggul, inovatif, dan berorientasi pada pendidikan abad 21.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
+          <div class="glass-card p-8 tilt-card col-span-2 flex flex-col items-center text-center">
+            <img src="logo.png" alt="Logo UNY" class="w-24 h-24 mb-4 rounded-full border border-techCyan shadow-[0_0_15px_rgba(0,240,255,0.3)]" />
+            <h3 class="text-xl font-bold">Universitas Negeri Yogyakarta</h3>
+            <p class="text-gray-400 text-sm italic mt-2">"Leading and Outstanding in Education"</p>
+            <div class="flex justify-around w-full mt-6 text-center">
+              <div><span class="text-2xl font-tech text-techCyan">1964</span><br /><span class="text-xs text-gray-500">Tahun Berdiri</span></div>
+              <div><span class="text-2xl font-tech text-unyYellow">A</span><br /><span class="text-xs text-gray-500">Akreditasi</span></div>
+              <div><span class="text-2xl font-tech text-techCyan">12</span><br /><span class="text-xs text-gray-500">Fakultas</span></div>
+            </div>
+            <a href="https://www.uny.ac.id" target="_blank" class="btn-neon mt-6 px-6 py-2 border border-techCyan text-techCyan rounded-full font-tech text-sm">Situs Resmi UNY <i class="fa-solid fa-arrow-up-right-from-square ml-1"></i></a>
+          </div>
+
+          <div class="glass-card p-8 tilt-card col-span-3">
+            <div class="mb-4">
+              <p class="text-gray-300 text-sm leading-relaxed mb-3">
+                UNY merupakan salah satu LPTK terkemuka di Indonesia yang memiliki komitmen tinggi dalam mencetak guru-guru profesional, berkarakter, dan adaptif terhadap perkembangan teknologi. Sebagai penyelenggara PPG Prajabatan, UNY
+                mengintegrasikan nilai-nilai keunggulan lokal dan global dalam setiap proses pembelajaran.
+              </p>
+              <p class="text-gray-300 text-sm leading-relaxed">
+                Program PPG Prajabatan di UNY dirancang untuk membekali calon guru dengan kompetensi pedagogik, profesional, sosial, dan kepribadian yang mumpuni, serta berbasis pada riset dan praktik lapangan.
+              </p>
+            </div>
+            <div class="mt-4">
+              <h4 class="font-bold flex items-center gap-2 text-white"><i class="fa-solid fa-location-dot text-techCyan"></i> Kampus Karangmalang, Yogyakarta</h4>
+              <p class="text-gray-400 text-xs mb-2">Jl. Colombo No.1, Karangmalang, Sleman, Daerah Istimewa Yogyakarta</p>
+              <div class="rounded-lg overflow-hidden border border-techCyan/20">
+                <iframe src="https://maps.google.com/maps?q=Jl.+Colombo+No.1,+Karangmalang,+Sleman,+Yogyakarta&t=&z=16&ie=UTF8&iwloc=&output=embed" width="100%" height="200" style="border: 0" allowfullscreen="" loading="lazy"></iframe>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= JOURNEY / PEMETAAN ================= -->
+    <section id="dokumen" class="py-24 relative z-10">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16 reveal">
+          <h2 class="text-3xl md:text-5xl font-tech font-bold text-white mb-4">Pemetaan <span class="text-gradient">Ruang Karya</span></h2>
+          <p class="text-gray-400 max-w-2xl mx-auto">Jejak langkah dari perencanaan, implementasi, hingga refleksi mendalam.</p>
+        </div>
+
+        <div class="relative">
+          <div class="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-techCyan/20 hidden md:block"></div>
+          <div class="space-y-8">
+            <div class="flex flex-col md:flex-row items-center gap-6 reveal">
+              <div class="glass-card p-6 tilt-card w-full md:w-1/2 text-center md:text-right">
+                <span class="text-xs font-tech text-techCyan tracking-widest">Tahap 01 | UTS</span>
+                <h3 class="text-xl font-bold mt-2">Fondasi Profesional & Perencanaan</h3>
+                <p class="text-gray-400 text-sm mt-2">
+                  Mengulas identitas saya sebagai calon guru profesional beserta analisis mendalam terhadap artefak modul ajar dan instrumen yang digunakan selama praktik terbimbing siklus 1 hingga siklus 3 (E-Portofolio 1).
+                </p>
+              </div>
+              <div class="hidden md:flex w-10 h-10 bg-techCyan rounded-full items-center justify-center shadow-[0_0_10px_#00F0FF] z-10">
+                <i class="fa-solid fa-file-signature text-darkBg"></i>
+              </div>
+              <div class="hidden md:block w-full md:w-1/2"></div>
+            </div>
+            <div class="flex flex-col md:flex-row items-center gap-6 reveal">
+              <div class="hidden md:block w-full md:w-1/2"></div>
+              <div class="hidden md:flex w-10 h-10 bg-unyYellow rounded-full items-center justify-center shadow-[0_0_10px_#F2A900] z-10">
+                <i class="fa-solid fa-arrows-rotate text-darkBg"></i>
+              </div>
+              <div class="glass-card p-6 tilt-card w-full md:w-1/2 text-center md:text-left">
+                <span class="text-xs font-tech text-unyYellow tracking-widest">Tahap 02 | UAS</span>
+                <h3 class="text-xl font-bold mt-2">Refleksi Akhir & Filosofi</h3>
+                <p class="text-gray-400 text-sm mt-2">
+                  Evaluasi menyeluruh dari praktik terbimbing tahapan orientasi hingga praktik terbimbing. Kristalisasi prinsip, keyakinan, dan nilai pengajaran sebagai ideologi perjalanan profesional saya (E-Portofolio 2).
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= ARTEFAK SHOWCASE ================= -->
+    <section id="artefak" class="py-24 relative z-10">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16 reveal">
+          <h2 class="text-3xl md:text-5xl font-tech font-bold text-white mb-4">Ruang Karya & <span class="text-gradient">Artefak</span></h2>
+          <p class="text-gray-400 max-w-2xl mx-auto">Representasi kompetensi nyata melalui produk digital pembelajaran pilihan.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="glass-card tilt-card group overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=800&q=80" alt="Observasi" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500" />
+            <div class="p-6">
+              <span class="text-xs font-tech text-techCyan tracking-wider">Observasi</span>
+              <h3 class="text-lg font-bold mt-1">OBSERVASI LINGKUNGAN</h3>
+              <p class="text-gray-400 text-sm mt-2">Studi mendalam karakteristik siswa dan lingkungan belajar di sekolah latihan.</p>
+              <a href="artefak.html" class="inline-flex items-center gap-1 mt-4 text-techCyan text-sm font-medium hover:underline">Buka Berkas <i class="fa-solid fa-arrow-right text-xs"></i></a>
+            </div>
+          </div>
+          <div class="glass-card tilt-card group overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80" alt="Modul Ajar" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500" />
+            <div class="p-6">
+              <span class="text-xs font-tech text-techCyan tracking-wider">Modul Ajar</span>
+              <h3 class="text-lg font-bold mt-1">MODUL AJAR PJOK</h3>
+              <p class="text-gray-400 text-sm mt-2">Perangkat ajar berdiferensiasi yang disesuaikan dengan kurikulum merdeka.</p>
+              <a href="artefak.html" class="inline-flex items-center gap-1 mt-4 text-techCyan text-sm font-medium hover:underline">Buka Berkas <i class="fa-solid fa-arrow-right text-xs"></i></a>
+            </div>
+          </div>
+          <div class="glass-card tilt-card group overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1588072432836-e10032774350?auto=format&fit=crop&w=800&q=80" alt="LKPD" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500" />
+            <div class="p-6">
+              <span class="text-xs font-tech text-techCyan tracking-wider">LKPD</span>
+              <h3 class="text-lg font-bold mt-1">LKPD INTERAKTIF</h3>
+              <p class="text-gray-400 text-sm mt-2">Lembar kerja digital inovatif untuk mengoptimalkan keaktifan motorik siswa.</p>
+              <a href="artefak.html" class="inline-flex items-center gap-1 mt-4 text-techCyan text-sm font-medium hover:underline">Buka Berkas <i class="fa-solid fa-arrow-right text-xs"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= GALERI ================= -->
+    <section class="py-24 relative z-10">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16 reveal">
+          <h2 class="text-3xl md:text-5xl font-tech font-bold text-white mb-4">Momen <span class="text-gradient">Aksi Nyata</span></h2>
+          <p class="text-gray-400 max-w-2xl mx-auto">Tangkapan lensa dari semangat dan keringat di lapangan.</p>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div class="group relative overflow-hidden rounded-xl tilt-card border border-techCyan/20 hover:border-techCyan transition-colors">
+            <img src="IMG/penerjunan.jpeg" alt="Penerjunan" class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500" />
+            <div class="absolute inset-0 bg-darkBg/60 flex items-end p-4 opacity-0 group-hover:opacity-100 transition-opacity">
+              <span class="text-white text-sm font-medium">Penerjunan PPL Terbimbing</span>
+            </div>
+          </div>
+          <div class="group relative overflow-hidden rounded-xl tilt-card border border-techCyan/20 hover:border-techCyan transition-colors">
+            <img src="IMG/praktik1.jpeg" alt="Piket Pagi" class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500" />
+            <div class="absolute inset-0 bg-darkBg/60 flex items-end p-4 opacity-0 group-hover:opacity-100 transition-opacity">
+              <span class="text-white text-sm font-medium">Praktik Mengajar</span>
+            </div>
+          </div>
+          <div class="group relative overflow-hidden rounded-xl tilt-card border border-techCyan/20 hover:border-techCyan transition-colors">
+            <img src="IMG/praktik2.jpeg" alt="Kunjungan DPL" class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500" />
+            <div class="absolute inset-0 bg-darkBg/60 flex items-end p-4 opacity-0 group-hover:opacity-100 transition-opacity">
+              <span class="text-white text-sm font-medium">Asistensi GP</span>
+            </div>
+          </div>
+          <div class="group relative overflow-hidden rounded-xl tilt-card border border-techCyan/20 hover:border-techCyan transition-colors">
+            <img src="IMG/pelepasan.jpeg" alt="Bimbingan GP" class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500" />
+            <div class="absolute inset-0 bg-darkBg/60 flex items-end p-4 opacity-0 group-hover:opacity-100 transition-opacity">
+              <span class="text-white text-sm font-medium">Pelepasan PPL</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="glass-nav border-t border-gray-800 mt-20 relative z-10">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div>
+            <h3 class="font-tech text-white text-lg">E-Portofolio<span class="text-unyYellow"> PPG</span></h3>
+            <p class="text-gray-400 text-sm mt-3">Ruang rekam jejak Praktik Pengalaman Lapangan (PPL) 1. Disusun sebagai dokumentasi dan refleksi perjalanan menjadi guru profesional.</p>
+          </div>
+          <div>
+            <h4 class="font-bold text-white flex items-center gap-2"><i class="fa-solid fa-book-open text-techCyan"></i> E-Portofolio 1</h4>
+            <ul class="mt-3 space-y-2 text-sm text-gray-400">
+              <li>
+                <a href="profile.html" class="hover:text-techCyan transition"><i class="fa-solid fa-user-graduate mr-2 w-4"></i>Profil Mahasiswa</a>
+              </li>
+              <li>
+                <a href="artefak.html" class="hover:text-techCyan transition"><i class="fa-solid fa-file-waveform mr-2 w-4"></i>Artefak Produk</a>
+              </li>
+              <li>
+                <a href="penilaian.html" class="hover:text-techCyan transition"><i class="fa-solid fa-list-check mr-2 w-4"></i>Instrumen Penilaian</a>
+              </li>
+              <li>
+                <a href="modelguru.html" class="hover:text-techCyan transition"><i class="fa-solid fa-chalkboard-user mr-2 w-4"></i>Model Guru</a>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-bold text-white flex items-center gap-2"><i class="fa-solid fa-layer-group text-techCyan"></i> E-Portofolio 2</h4>
+            <ul class="mt-3 space-y-2 text-sm text-gray-400">
+              <li>
+                <a href="refleksi.html" class="hover:text-techCyan transition"><i class="fa-solid fa-arrows-rotate mr-2 w-4"></i>Refleksi Akhir</a>
+              </li>
+              <li>
+                <a href="filosofi.html" class="hover:text-techCyan transition"><i class="fa-solid fa-seedling mr-2 w-4"></i>Filosofi Mengajar</a>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-bold text-white flex items-center gap-2"><i class="fa-solid fa-location-dot text-techCyan"></i> Lokasi LPTK</h4>
+            <p class="text-gray-400 text-sm mt-3"><i class="fa-solid fa-building-columns mr-1"></i> Universitas Negeri Yogyakarta</p>
+            <div class="rounded-lg overflow-hidden mt-3 border border-techCyan/20">
+              <iframe src="https://maps.google.com/maps?q=Universitas%20Negeri%20Yogyakarta&t=&z=15&ie=UTF8&iwloc=&output=embed" width="100%" height="120" style="border: 0" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+            <div class="flex gap-3 mt-4 text-sm text-gray-400">
+              <a href="mailto:Hilmibanda@gmail.com" class="hover:text-techCyan"><i class="fa-solid fa-envelope mr-1"></i> Email</a>
+              <a href="https://www.instagram.com/hilmibanda/" target="_blank" class="hover:text-techCyan"><i class="fa-brands fa-instagram mr-1"></i> Instagram</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="border-t border-gray-800 py-4">
+        <div class="max-w-7xl mx-auto px-4 text-center text-gray-500 text-xs">© 2026 Muhammad Hilmi Bandanuji - E-Portofolio PPL PPG. Semua Hak Cipta Dilindungi.</div>
+      </div>
+    </footer>
+
+    <!-- ================= SCRIPTS ================= -->
+    <script>
+      // --- Kustom Kursor ---
+      const dot = document.getElementById("cursor-dot");
+      const outline = document.getElementById("cursor-outline");
+      window.addEventListener("mousemove", (e) => {
+        dot.style.left = `${e.clientX}px`;
+        dot.style.top = `${e.clientY}px`;
+        setTimeout(() => {
+          outline.style.left = `${e.clientX}px`;
+          outline.style.top = `${e.clientY}px`;
+        }, 50);
+      });
+      document.querySelectorAll("a, button, .tilt-card").forEach((el) => {
+        el.addEventListener("mouseenter", () => {
+          outline.style.width = "60px";
+          outline.style.height = "60px";
+          outline.style.backgroundColor = "rgba(0, 240, 255, 0.1)";
+          dot.style.transform = "translate(-50%, -50%) scale(1.5)";
+        });
+        el.addEventListener("mouseleave", () => {
+          outline.style.width = "40px";
+          outline.style.height = "40px";
+          outline.style.backgroundColor = "transparent";
+          dot.style.transform = "translate(-50%, -50%) scale(1)";
+        });
+      });
+
+      // --- 3D Tilt Effect ---
+      document.querySelectorAll(".tilt-card").forEach((card) => {
+        card.addEventListener("mousemove", (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          const centerX = rect.width / 2;
+          const centerY = rect.height / 2;
+          const rotateX = ((y - centerY) / centerY) * -10;
+          const rotateY = ((x - centerX) / centerX) * 10;
+          card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+        });
+        card.addEventListener("mouseleave", () => {
+          card.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)";
+        });
+      });
+
+      // --- Mengetik Otomatis ---
+      const texts = ["Pendidikan Teknik Elektronika - UNY", "Mencetak Generasi Melek Teknologi", "Inovasi Pedagogi Era Digital"];
+      let count = 0,
+        index = 0;
+      const typingEl = document.getElementById("typewriter");
+      function type() {
+        if (count === texts.length) count = 0;
+        let current = texts[count];
+        typingEl.textContent = current.slice(0, ++index);
+        if (index === current.length) {
+          count++;
+          index = 0;
+          setTimeout(type, 2000);
+        } else setTimeout(type, 100);
+      }
+      type();
+
+      // --- Reveal Scroll ---
+      function reveal() {
+        document.querySelectorAll(".reveal").forEach((el) => {
+          const windowHeight = window.innerHeight;
+          const elementTop = el.getBoundingClientRect().top;
+          if (elementTop < windowHeight - 80) el.classList.add("active");
+        });
+      }
+      window.addEventListener("scroll", reveal);
+      reveal();
+
+      // --- Network Canvas ---
+      const canvas = document.getElementById("networkCanvas");
+      const ctx = canvas.getContext("2d");
+      let width,
+        height,
+        particles = [];
+      function resize() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      }
+      window.addEventListener("resize", resize);
+      resize();
+      class Particle {
+        constructor() {
+          this.x = Math.random() * width;
+          this.y = Math.random() * height;
+          this.vx = (Math.random() - 0.5) * 1;
+          this.vy = (Math.random() - 0.5) * 1;
+          this.radius = Math.random() * 2 + 1;
+        }
+        update() {
+          this.x += this.vx;
+          this.y += this.vy;
+          if (this.x < 0 || this.x > width) this.vx *= -1;
+          if (this.y < 0 || this.y > height) this.vy *= -1;
+        }
+        draw() {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+          ctx.fillStyle = "rgba(0, 240, 255, 0.5)";
+          ctx.fill();
+        }
+      }
+      for (let i = 0; i < 70; i++) particles.push(new Particle());
+      function animate() {
+        ctx.clearRect(0, 0, width, height);
+        particles.forEach((p, i) => {
+          p.update();
+          p.draw();
+          for (let j = i + 1; j < particles.length; j++) {
+            const p2 = particles[j];
+            const dx = p.x - p2.x,
+              dy = p.y - p2.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 120) {
+              ctx.beginPath();
+              ctx.moveTo(p.x, p.y);
+              ctx.lineTo(p2.x, p2.y);
+              ctx.strokeStyle = `rgba(0,240,255,${0.2 - dist / 600})`;
+              ctx.lineWidth = 1;
+              ctx.stroke();
+            }
+          }
+        });
+        requestAnimationFrame(animate);
+      }
+      animate();
+
+      // --- Mobile Menu ---
+      const hamburger = document.getElementById("hamburger");
+      const navMenu = document.getElementById("nav-menu");
+      hamburger.addEventListener("click", () => {
+        navMenu.classList.toggle("hidden");
+        hamburger.classList.toggle("active");
+      });
+      document.querySelectorAll(".dropbtn-mobile").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const content = btn.nextElementSibling;
+          content.classList.toggle("hidden");
+          const chevron = btn.querySelector(".chevron");
+          if (chevron) chevron.style.transform = content.classList.contains("hidden") ? "rotate(0deg)" : "rotate(180deg)";
+        });
+      });
+    </script>
+  </body>
+</html>
