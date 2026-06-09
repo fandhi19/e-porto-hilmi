@@ -185,6 +185,7 @@
         font-size: 0.8rem;
         font-weight: 500;
         box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+        z-index: 20; /* Pastikan di depan foto */
       }
 
       /* Timeline */
@@ -309,15 +310,18 @@
       <section class="editorial-profile py-16 relative z-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div class="grid grid-cols-1 lg:grid-cols-5 gap-10 items-center">
+            <!-- Visual Foto -->
             <div class="lg:col-span-2 relative flex justify-center reveal">
               <div class="relative w-80 h-80 lg:w-96 lg:h-96">
                 <div class="absolute inset-0 rounded-full bg-gradient-to-br from-techCyan/20 to-unyYellow/20 blur-xl"></div>
                 <img src="IMG/Pas Foto .jpg" alt="Muhammad Hilmi Bandanuji" class="relative w-full h-full object-cover rounded-full border-4 border-techCyan shadow-[0_0_30px_rgba(0,240,255,0.4)] z-10" />
-                <div class="float-badge badge-lokasi" style="top: 10%; left: -20px"><i class="fa-solid fa-location-dot text-techCyan"></i> Magelang, Indonesia</div>
+                <!-- Badge sudah diberi z-20 via class float-badge -->
+                <div class="float-badge badge-lokasi" style="top: 90px; left: -80px"><i class="fa-solid fa-location-dot text-techCyan"></i> Magelang, Indonesia</div>
                 <div class="float-badge badge-status" style="bottom: 10%; right: -30px"><i class="fa-solid fa-medal text-unyYellow"></i> Calon Guru Profesional</div>
               </div>
             </div>
 
+            <!-- Konten Teks -->
             <div class="lg:col-span-3 space-y-6 reveal">
               <div class="inline-block px-3 py-1 rounded-full border border-unyYellow/50 bg-unyYellow/10 text-unyYellow text-xs font-medium tracking-wider"><i class="fa-solid fa-id-badge mr-1"></i> E-Portofolio 1 (UTS)</div>
               <h1 class="text-5xl md:text-7xl font-tech font-bold text-white">Muhammad Hilmi Bandanuji</h1>
@@ -393,8 +397,9 @@
                 <div class="md:w-1/2 order-3 hidden md:block"></div>
               </div>
 
-              <!-- Item 2 -->
-              <div class="relative flex flex-col md:flex-row items-center gap-6 reveal" style="left: 457px">
+              <!-- Item 2 (posisi kanan) -->
+              <div class="relative flex flex-col md:flex-row items-center gap-6 reveal" style="left: 460px">
+                <!-- Di mobile urutan normal, di desktop kanan -->
                 <div class="md:w-1/2 order-2 md:order-3 md:pl-10">
                   <div class="glass-card p-6 tilt-card inline-block text-left">
                     <span class="text-xs font-tech text-unyYellow tracking-widest">2019 - 2023</span>
@@ -409,6 +414,7 @@
                 <div class="timeline-dot z-10 order-1 md:order-2" style="border-color: #f2a900; box-shadow: 0 0 15px rgba(242, 169, 0, 0.5); color: #f2a900">
                   <i class="fa-solid fa-building-columns"></i>
                 </div>
+                <!-- Spacer kiri di desktop -->
                 <div class="md:w-1/2 order-3 hidden md:block"></div>
               </div>
 
@@ -435,36 +441,6 @@
         </div>
       </section>
 
-      <!-- Kompetensi & Keahlian -->
-      <!-- <section class="py-16 relative z-10">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div class="text-center mb-16 reveal">
-            <h2 class="text-3xl md:text-5xl font-tech font-bold text-white mb-4">Kompetensi & <span class="text-gradient">Keahlian</span></h2>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            Card 1
-            <div class="glass-card p-6 tilt-card group text-center reveal">
-              <i class="fa-solid fa-whistle text-5xl text-techCyan mb-4 group-hover:scale-110 transition-transform"></i>
-              <h3 class="text-xl font-bold text-white mb-2">Pedagogi Olahraga</h3>
-              <p class="text-gray-400 text-sm">Merancang modifikasi permainan yang menyenangkan agar semua siswa aktif dan gembira.</p>
-            </div>
-            Card 2
-            <div class="glass-card p-6 tilt-card group text-center reveal">
-              <i class="fa-solid fa-heart-pulse text-5xl text-unyYellow mb-4 group-hover:scale-110 transition-transform"></i>
-              <h3 class="text-xl font-bold text-white mb-2">Kesehatan Jasmani</h3>
-              <p class="text-gray-400 text-sm">Pemahaman mendalam anatomi & merancang program kebugaran berbasis saintifik.</p>
-            </div>
-            Card 3
-            <div class="glass-card p-6 tilt-card group text-center reveal">
-              <i class="fa-solid fa-volleyball text-5xl text-techCyan mb-4 group-hover:scale-110 transition-transform"></i>
-              <h3 class="text-xl font-bold text-white mb-2">Manajemen Turnamen</h3>
-              <p class="text-gray-400 text-sm">Keahlian mengorganisir kepanitiaan olahraga sekolah dan class meeting (Event Organizer).</p>
-            </div>
-          </div>
-        </div>
-      </section> -->
-
       <!-- Hobi / Sisi Lain -->
       <section class="py-16 relative z-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -474,36 +450,36 @@
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <!-- Renang -->
+            <!-- Badminton -->
             <div class="glass-card tilt-card group overflow-hidden reveal">
-              <img src="IMG/bd.jpg" alt="Renang" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500" />
+              <img src="IMG/bd.jpg" alt="Badminton" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500" />
               <div class="p-6 relative">
                 <div class="absolute -top-6 left-6 w-12 h-12 rounded-full bg-darkBg border-2 border-techCyan flex items-center justify-center text-techCyan text-xl shadow-[0_0_10px_#00F0FF]">
-                  <i class="fa-solid fa-person-swimming"></i>
+                  <i class="fa-solid fa-spoon"></i>
                 </div>
                 <h3 class="text-xl font-bold text-white mt-4 mb-2">Badminton</h3>
                 <p class="text-gray-400 text-sm">Melatih ritme pernapasan dan ketahanan kardiovaskular secara teratur di akhir pekan.</p>
               </div>
             </div>
 
-            <!-- Hiking -->
+            <!-- Rekayasa Teknologi -->
             <div class="glass-card tilt-card group overflow-hidden reveal">
-              <img src="IMG/rekayasa.jpg" alt="Hiking" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500" />
+              <img src="IMG/rekayasa.jpg" alt="Rekayasa" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500" />
               <div class="p-6 relative">
                 <div class="absolute -top-6 left-6 w-12 h-12 rounded-full bg-darkBg border-2 border-unyYellow flex items-center justify-center text-unyYellow text-xl shadow-[0_0_10px_#F2A900]">
-                  <i class="fa-solid fa-mountain-sun"></i>
+                  <i class="fa-solid fa-code"></i>
                 </div>
                 <h3 class="text-xl font-bold text-white mt-4 mb-2">Rekayasa Teknologi</h3>
                 <p class="text-gray-400 text-sm">Mengeksplorasi inovasi dan perancangan sistem terintegrasi guna memberikan solusi teknis yang efisien, adaptif, dan relevan dengan kebutuhan industri modern.</p>
               </div>
             </div>
 
-            <!-- Bola Voli -->
+            <!-- Robotika -->
             <div class="glass-card tilt-card group overflow-hidden reveal">
-              <img src="IMG/robot.jpg" alt="Bola Voli" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500" />
+              <img src="IMG/robot.jpg" alt="Robotika" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500" />
               <div class="p-6 relative">
                 <div class="absolute -top-6 left-6 w-12 h-12 rounded-full bg-darkBg border-2 border-techCyan flex items-center justify-center text-techCyan text-xl shadow-[0_0_10px_#00F0FF]">
-                  <i class="fa-solid fa-volleyball"></i>
+                  <i class="fa-solid fa-robot"></i>
                 </div>
                 <h3 class="text-xl font-bold text-white mt-4 mb-2">Robotika</h3>
                 <p class="text-gray-400 text-sm">Membangun dan memprogram sistem otomasi cerdas yang mensinergikan mekanika, elektronika, dan ilmu komputasi untuk menjalankan instruksi secara presisi.</p>
